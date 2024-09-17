@@ -2,15 +2,14 @@ import { motion } from "framer-motion";
 import { PlusCircle } from "lucide-react";
 import React, { forwardRef } from "react";
 import classNames from 'classnames';
+import styles from './plusButton.module.css'; //using modules to prevent them from applying globally 
+
 
 const PlusButton = forwardRef(function PlusButton({ showFloatingMenu, setShowFloatingMenu }, ref) {
   return (
-    <button
+     <button
       ref={ref}
-      className={classNames(
-        "absolute right-6 rounded-full top-[-15.5px] bg-white active:text-gray-400",
-        { "text-gray-400": showFloatingMenu, "text-gray-300": !showFloatingMenu }
-      )}
+      className={`${styles.plusButton} ${showFloatingMenu ? styles.plusButtonActive : styles.plusButtonInactive}`}
       onClick={() => {
         setShowFloatingMenu(!showFloatingMenu);
       }}

@@ -1,0 +1,20 @@
+.plusButton {
+  position: absolute;
+  right: 24px;
+  top: -15.5px;
+  background-color: white;
+  border-radius: 50%;
+  border: none;
+  box-shadow: none;
+  cursor: pointer;
+  outline: none;
+  transition: color 0.3s, transform 0.3s;
+}
+
+.plusButtonActive {
+  color: #9ca3af; /* Gray 400 */
+}
+
+.plusButtonInactive {
+  color: #d1d5db; /* Gray 300 */
+}

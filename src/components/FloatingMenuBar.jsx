@@ -1,39 +1,65 @@
-import React from 'react';
+import React,{useRef} from 'react';
 import {FloatingMenu,useEditor} from '@tiptap/react'
+
 import { Image as ImageIcon, List as ListIcon, Film as FilmIcon} from 'react-bootstrap-icons'; // Using Bootstrap Icons
+import { ListOrdered, Minus } from "lucide-react";
 import { motion } from "framer-motion";
-import { Image as ImageLucide, List, ListOrdered, Minus } from "lucide-react";
+
 import classNames from "classnames";
-import Image from '@tiptap/extension-image';
-import {useRef} from "react";
-import { useOutsideClick } from "../hooks/use_outside_clicks.jsx";
+
 import PlusButton from './Buttons/PlusButton.jsx'
-//import Video from '@tiptap/extension-video';
-//import CodeBlock from '@tiptap/extension-code-block';
+
+import { useOutsideClick } from "../hooks/use_outside_clicks.jsx";
+import { convertFileToBase64 } from "../utils/convert-file-to-base64.js";
+import { extractVideoId, generateEmbedUrl } from '../utils/video.js';
+
+
 
 export default function FloatingMenuBar({editor,showPlusButton,showFloatingMenu,setShowFloatingMenu}){
-
-	const shouldFloatingMenuShow = (
-		editor
-		) => {
+	
+	const hiddenFileInput = useRef() ;
+	const shouldFloatingMenuShow = (editor) => {
 	    const { selection } = editor.state;
-
 	    // If the selection is not empty, do not show the floating menu.
 	    // If depth is 1, it means the selection is in the top level of the document.
 	    // ol, ul depth will not be 1, so we need to check if the selection is in the top level.
 	    if (!selection.empty || selection.$head.parent.content.size > 0 || selection.$head.depth !== 1) {
 	      return false;
 	    }
-
 	    return true;
-	  };
+	};
 
 	const items = [
+		{
+	      name: 'video',
+	      isActive:()=>editor.isActive("video"),
+	      command: () => {
+	        const url = prompt('Enter the video URL');
+	        const videoData = extractVideoId(url);
+	        if (videoData) {
+	          const embedUrl = generateEmbedUrl(videoData.platform, videoData.id);
+	          if (embedUrl) {
+	            editor.chain().focus().insertContent(`<iframe src="${embedUrl}" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>`).run();
+	        }
+	        } else {
+	          alert('Invalid video URL');
+	        }
+	      },
+	      icon: <FilmIcon style={{ fontSize: '20px', color: '#1a8917' }} />,
+	    },
+		{
+	      name: "image",
+	      isActive: () => editor.isActive("image"),
+	      command: () => {
+	        hiddenFileInput.current.click();
+	      },
+	      icon: <ImageIcon style={{fontSize:'20px',color:'#1a8917'}} />,
+	    },
 		{
 	      name: "bulletList",
 	      isActive: () => editor.isActive("bulletList"),
 	      command: () => editor.chain().focus().toggleBulletList().run(),
-	      icon: <List style={{ fontSize: '20px', color: '#1a8917' }}  strokeWidth={1} />,
+	      icon: <ListIcon style={{ fontSize: '20px', color: '#1a8917' }}  strokeWidth={1} />,
 	    },
 	    {
 	      name: "orderedList",
@@ -51,10 +77,20 @@ export default function FloatingMenuBar({editor,showPlusButton,showFloatingMenu,
 
 	const ref = useOutsideClick(() => {
 	    setShowFloatingMenu(false);
+	    console.log('this')
 	  });
 
+	const addImage = async (e) => {
+	    const file = (e.target).files?.[0];
+	    if (!file) return;
+	    const base64 = await convertFileToBase64(file);
+
+	    if (base64) {
+	      editor?.chain().focus().setImage({ src: base64 }).run();
+	    }
+	  };
+
 	return (
-		
 			<FloatingMenu 
 				className={classNames({
 			    	flex: showPlusButton,  // Will add the 'flex' class when showPlusButton is true
@@ -71,12 +107,22 @@ export default function FloatingMenuBar({editor,showPlusButton,showFloatingMenu,
 			        setShowFloatingMenu={setShowFloatingMenu}
 			    />
 
+			    <input
+			        ref={hiddenFileInput}
+			        hidden
+			        accept="image/png, image/jpeg, image/jpg"
+			        type="file"
+			        onInput={(e) => {
+			          addImage(e);
+			        }}
+			      />
+
 				{showFloatingMenu && (
 				  <div
 				    style={{
 				      position: 'absolute',
-				      left: '50px',
-				      top: '0px',
+				      left: '-20px',
+				      top: '-25px',
 				      zIndex: 9999,
 				      display: 'flex',
 				      height: '40px',
@@ -91,7 +137,7 @@ export default function FloatingMenuBar({editor,showPlusButton,showFloatingMenu,
 				        initial={{ opacity: 0 }}  // Start as invisible
 				        animate={{ opacity: 1 }}  // Become fully visible
 				        exit={{ opacity: 0 }}     // Become invisible on exit
-				        transition={{ duration: 0.2, delay: index * 0.01 }}  // Appear in quick succession
+				        transition={{ duration: 0.5, delay: index * 0.1 }}  // Appear in quick succession
 				        style={{
 				          border: '1px solid #1a8917',
 				          borderRadius: '80%',

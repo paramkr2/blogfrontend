@@ -1,67 +1,119 @@
-import React , {useState} from "react";
+import React , {useState,useEffect} from "react";
 import { useEditor, EditorContent, BubbleMenu } from "@tiptap/react";
+import styles from './BubbleMenu.module.css';
+import { BoldIcon, ItalicIcon, Link, Quote, Strikethrough, Type, UnderlineIcon } from "lucide-react";
 
-export const BubbleMenuBar = ({ editor }) => {
-  const [linkUrl, setLinkUrl] = useState(''); // State to handle the link URL input
-  const [showLinkInput, setShowLinkInput] = useState(false); // State to toggle the link input field
+import {LinkSelector} from './LinkSelector.jsx'
 
-  if (!editor) {
-    return null;
-  }
-
-  const addLink = () => {
-    if (linkUrl) {
-      editor.chain().focus().extendMarkRange('link').setLink({ href: linkUrl }).run();
-      setLinkUrl(''); // Reset the input field
-      setShowLinkInput(false); // Hide the link input
-    }
-  };
-  const removeLink = () => {
-    editor.chain().focus().unsetLink().run();
-  };
+export const BubbleMenuBar = ({ editor, showBubbleMenu, showLinkSelector, setShowLinkSelector }) => {
+  
 
 
+
+  const items = [
+    {
+      name: "bold",
+      disable: () => editor.isActive("heading"),
+      isActive: () => editor.isActive("bold"),
+      command: () => editor.chain().focus().toggleBold().run(),
+      icon: <BoldIcon className="size-[21px]" />,
+    },
+    {
+      name: "italic",
+      disable: () => editor.isActive("heading"),
+      isActive: () => editor.isActive("italic"),
+      command: () => editor.chain().focus().toggleItalic().run(),
+      icon: <ItalicIcon className="size-[21px]" />,
+    },
+    {
+      name: "underline",
+      disable: () => editor.isActive("heading"),
+      isActive: () => editor.isActive("underline"),
+      command: () => editor.chain().focus().toggleUnderline().run(),
+      icon: <UnderlineIcon className="size-[21px]" />,
+    },
+    {
+      name: "strike",
+      disable: () => editor.isActive("heading"),
+      isActive: () => editor.isActive("strike"),
+      command: () => editor.chain().focus().toggleStrike().run(),
+      icon: <Strikethrough className="size-[21px]" />,
+    },
+    {
+      name: "link",
+      disable: () => editor.isActive("heading"),
+      isActive: () => editor.isActive("link"),
+      command: () => {
+        setShowLinkSelector(!showLinkSelector);
+      },
+      icon: <Link className="size-[21px]" />,
+    },
+    {
+      name: "heading2",
+      isActive: () => editor.isActive("heading", { level: 2 }),
+      command: () => editor.chain().focus().toggleHeading({ level: 2 }).run(),
+      icon: <Type className="size-[21px]" />,
+    },
+    {
+      name: "heading3",
+      isActive: () => editor.isActive("heading", { level: 3 }),
+      command: () => editor.chain().focus().toggleHeading({ level: 3 }).run(),
+      icon: <Type className="size-[15px]" />,
+    },
+    {
+      name: "blockquote",
+      isActive: () => editor.isActive("blockquote"),
+      command: () => editor.chain().focus().toggleBlockquote().run(),
+      icon: <Quote className="size-[21px]" />,
+    },
+  ];
+  
+  const width = 40 * items.length;
+
+
+  useEffect(() => {
+    const handleSelectionChange = () => {
+      setShowLinkSelector(false);
+    };
+
+    editor.on('selectionUpdate', handleSelectionChange);
+
+    // Clean up the event listener on component unmount
+    return () => {
+      editor.off('selectionUpdate', handleSelectionChange);
+    };
+  }, [editor, setShowLinkSelector]);
+
+  
   return (
-    <BubbleMenu editor={editor} tippyOptions={{ duration: 100 }}>
-      <button
-        onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-        className={editor.isActive("heading", { level: 2 }) ? "is-active" : ""}
-      >
-        h2
-      </button>
-      
-      <button
-        onClick={() => editor.chain().focus().toggleBold().run()}
-        className={editor.isActive("bold") ? "is-active" : ""}
-      >
-        bold
-      </button>
-      
-      <button
-        onClick={() => editor.chain().focus().setTextAlign("justify").run()}
-        className={editor.isActive({ textAlign: "justify" }) ? "is-active" : ""}
-      >
-        justify
-      </button>
-      
-       <button
-        onClick={() => setShowLinkInput(!showLinkInput)}
-        className={editor.isActive("link") ? "is-active" : ""}
-      >
-        Link
-      </button>
-
-      {showLinkInput && (
-        <div className="link-input">
-          <input
-            type="text"
-            placeholder="Enter URL"
-            value={linkUrl}
-            onChange={(e) => setLinkUrl(e.target.value)}
-          />
-          <button onClick={addLink}>Add Link</button>
-          <button onClick={removeLink}>Remove Link</button>
-        </div>
+    <BubbleMenu
+      className={`${showBubbleMenu ? styles.bubbleMenu : styles.bubbleMenuHidden}`} // Use module class names
+      editor={editor}
+      tippyOptions={{
+        moveTransition: "transform 0.15s ease-out",
+      }}
+    >
+      {showLinkSelector ? (
+        <LinkSelector
+          editor={editor}
+          showLinkSelector={showLinkSelector}
+          setShowLinkSelector={setShowLinkSelector}
+        />
+      ) : (
+        <>
+          {items.map((item) => (
+            <React.Fragment key={item.name}>
+              <button
+                className={`${item.isActive() ? styles.textActive : item.disable?.() ? styles.textDisabled : styles.textDefault}`}
+                disabled={item.disable?.()}
+                onClick={item.command}
+              >
+                {item.icon}
+              </button>
+              {item.name === "link" && <div className={styles.divider} />}
+            </React.Fragment>
+          ))}
+        </>
       )}
     </BubbleMenu>
   );
