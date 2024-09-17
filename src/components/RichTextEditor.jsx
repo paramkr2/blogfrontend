@@ -12,6 +12,9 @@ import {BubbleMenuBar} from './BubbleMenuBar';
 import FloatingMenuBar from './FloatingMenuBar';
 
 export default function Editor({ content, onUpdate }) {
+  const [showFloatingMenu, setShowFloatingMenu] = useState(false);
+  const [showPlusButton, setShowPlusButton] = useState(false);
+
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -29,7 +32,12 @@ export default function Editor({ content, onUpdate }) {
   return (
     <div>
       <BubbleMenuBar editor={editor} />
-      <FloatingMenuBar editor={editor} />
+      <FloatingMenuBar 
+        editor={editor}
+        showPlusButton={showPlusButton}
+        showFloatingMenu={showFloatingMenu}
+        setShowFloatingMenu={setShowFloatingMenu}
+       />
       <EditorContent editor={editor} />
     </div>
   );
