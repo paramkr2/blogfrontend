@@ -9,6 +9,7 @@
   display: flex;
 }
 
+
 .bubbleMenuHidden {
   display: none;
 }
@@ -22,6 +23,7 @@
 }
 
 .textDefault {
+  background-color: transparent;
   color: white;
 }
 
