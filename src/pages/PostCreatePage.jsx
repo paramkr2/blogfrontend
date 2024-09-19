@@ -6,16 +6,52 @@ import { useNavigate } from 'react-router-dom';
 import './PostEditPage.css'
 
 function PostCreatePage() {
+  const [title, setTitle] = useState('');  // New state for title
   const [content, setContent] = useState(`
-      <h1>Welcome to CrytoGull</h1>
       <p>Click on the plus button on a new line to see the floating menu</p>
       <p>Select the content to see the bubble menu</p>
       `);
   const navigate = useNavigate();
 
-  const handleSave = () => {
+  const handleSavePublish = () => {
     console.log('Saving Content',content);
-    axios.post('/api/posts/', { content })
+    const is_published = true 
+    const token = localStorage.getItem('token'); // Get token from local storage
+    if (!token) {
+      setError('No authentication token found. Please log in.');
+      return;
+    }
+
+    axios.post(
+      `${import.meta.env.VITE_API_URL}/api/posts/`, 
+      { title,content , is_published },
+      {
+        headers: {
+          'Authorization': `Bearer ${token}`, 
+        },
+      })
+      .then(response => {
+        navigate(`/posts/${response.data.id}/view`);
+      })
+      .catch(error => console.error('Error creating post:', error));
+  };
+
+  const handleSaveDraft = () => {
+    console.log('Saving Draft',content);
+    const token = localStorage.getItem('token'); // Get token from local storage
+    if (!token) {
+      setError('No authentication token found. Please log in.');
+      return;
+    }
+    
+    axios.post(
+      `${import.meta.env.VITE_API_URL}/api/posts/`, 
+      { title,content  },
+      {
+        headers: {
+          'Authorization': `Bearer ${token}`, 
+        },
+      })
       .then(response => {
         navigate(`/posts/${response.data.id}/view`);
       })
@@ -28,10 +64,18 @@ function PostCreatePage() {
 
   return (
     <div className='edit post-content'>
-      <h1>Create Post</h1>
+       {/* Input for title */}
+      <input
+        type="text"
+        placeholder="Post Title"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+        className="post-title-input"
+      />
       <RichTextEditor onUpdate={setContent} content={content} />
-      <button onClick={handleSave}>Save Post</button>
-       <button onClick={handlePreview}>Preview Post</button>
+      <button onClick={handleSavePublish}>Save and Publish Post </button>
+      <button onClick={handleSaveDraft}> Save as Draft Post </button> 
+      <button onClick={handlePreview}>Preview Post</button>
     </div>
   );
 }

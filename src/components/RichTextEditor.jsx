@@ -5,7 +5,6 @@ import TextAlign from "@tiptap/extension-text-align";
 import Highlight from "@tiptap/extension-highlight";
 import Link from "@tiptap/extension-link";
 import Image from '@tiptap/extension-image';
-import "../styles.css";
 
 
 import {BubbleMenuBar} from './BubbleMenuBar';
@@ -89,7 +88,7 @@ export default function Editor({ content, onUpdate }) {
   });
 
   return (
-  <div style={{ padding: '40px 64px', minHeight: '400px', width: '800px', marginTop: '48px', border: '1px solid #e0e0e0', borderRadius: '8px' }}>
+  <div className="editor-box">
     {/* The bubble menu bar for formatting options */}
     <BubbleMenuBar 
       editor={editor} 
