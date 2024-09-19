@@ -29,6 +29,10 @@
   border-radius: 8px;
 }
 
+.post-heading {
+  font-size:2em;
+}
+
 .post-content h3 {
   font-size: 26px;
   font-weight: bold;

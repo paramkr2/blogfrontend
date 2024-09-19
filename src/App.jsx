@@ -10,6 +10,7 @@ import Navbar from './components/Navbar.jsx';
 import Login from './pages/Login.jsx'
 import Blog from './pages/Blog.jsx'
 import BlogPostDetail from './pages/BlogPostDetail';
+import Admin from './pages/Admin.jsx'
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
           <Route path="/login" element={<Login/>} /> 
           <Route path="/blog" element={<Blog/>} /> 
           <Route path="/blog/:postId" element={<BlogPostDetail />} />
+          <Route path="/admin" element={<Admin/>} />
         </Routes>
       </div>
     </Router>

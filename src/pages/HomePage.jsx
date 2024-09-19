@@ -1,6 +1,6 @@
 // src/pages/HomePage.jsx
 import React from 'react';
-import './HomePage.css';
+import './styles/HomePage.css';
 
 export default function HomePage() {
   return (

@@ -3,10 +3,10 @@ import React, { useState } from 'react';
 import RichTextEditor from '../components/RichTextEditor.jsx';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
-import './PostEditPage.css'
+import './styles/PostEditPage.css'
 
 function PostEditPage() {
-  
+
   // get post id from params 
   const { postId } = useParams(); // Get postId from URL params
   const [title, setTitle] = useState('');  // New state for title

@@ -32,7 +32,7 @@ const BlogPostDetail = () => {
 
   return (
     <div className="post-detail">
-      <h1 className="post-content" >{post.title}</h1>
+      <h1 className="post-content post-heading" >{post.title}</h1>
       <div
         className="post-content"
         dangerouslySetInnerHTML={{ __html: post.content }}  // Render HTML content safely

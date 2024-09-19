@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import RichTextEditor from '../components/RichTextEditor.jsx';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import './PostEditPage.css'
+import './styles/PostEditPage.css'
 
 function PostCreatePage() {
   const [title, setTitle] = useState('');  // New state for title
@@ -59,7 +59,11 @@ function PostCreatePage() {
   };
 
   const handlePreview = () => {
-    navigate('/posts/preview', { state: { content } });
+    // Construct the URL with query parameters or any method you prefer
+    const previewUrl = `${window.location.origin}/posts/preview?title=${encodeURIComponent(title)}&content=${encodeURIComponent(content)}`;
+    
+    // Open the URL in a new tab
+    window.open(previewUrl, '_blank');
   };
 
   return (
