@@ -1,24 +1,23 @@
-/* src/pages/HomePage.css */
 .home {
   display: flex;
   flex-direction: column;
 }
 
 .section {
-  height: 100vh; /* Full viewport height */
+  min-height: 100vh; /* Full viewport height */
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
-  color: white;
 }
 
 .section1 {
-  background-color: #1e90ff; /* Blue background */
+  background-color: #e3f2fd; /* Blue background */
 }
 
 .section2 {
-  background-color: #32cd32; /* Green background */
+  background-color: #f0f0f0; /* Light background for recent posts */
+  padding: 50px 0;
 }
 
 .section3 {
@@ -26,12 +25,36 @@
 }
 
 .cta-button {
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
-  text-decoration: none;
-  font-weight: bold;
-  border-radius: 5px;
-  transition: background-color 0.3s;
   margin-top: 20px;
+}
+
+
+ 
+
+.fade-in-text .word {
+  opacity: 0;
+  display: inline-block;
+  animation: fadeIn 0.8s forwards;
+}
+
+.fade-in-text .word:nth-child(1) {
+  animation-delay: 0.5s;
+}
+
+.fade-in-text .word:nth-child(2) {
+  animation-delay: 1.0s;
+}
+
+.fade-in-text .word:nth-child(3) {
+  animation-delay: 1.5s;
+}
+
+.fade-in-text .word:nth-child(4) {
+  animation-delay: 2.0s;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
 }

@@ -12,7 +12,7 @@ import PlusButton from './Buttons/PlusButton.jsx'
 import { useOutsideClick } from "../hooks/use_outside_clicks.jsx";
 import { convertFileToBase64 } from "../utils/convert-file-to-base64.js";
 import { extractVideoId, generateEmbedUrl } from '../utils/video.js';
-
+import axios from 'axios';
 
 
 export default function FloatingMenuBar({editor,showPlusButton,showFloatingMenu,setShowFloatingMenu}){
@@ -90,6 +90,28 @@ export default function FloatingMenuBar({editor,showPlusButton,showFloatingMenu,
 	    }
 	  };
 
+	 const uploadImage = async (e) => {
+	 	const file = (e.target).files?.[0];
+	    const formData = new FormData();
+	    formData.append('image', file);
+
+	    const token = localStorage.getItem('token');
+	    const response = await axios.post(
+	        `${import.meta.env.VITE_API_URL}/api/images/`,
+	        formData,
+	        {
+	            headers: {
+	                'Authorization': `Bearer ${token}`,
+	                'Content-Type': 'multipart/form-data'
+	            }
+	        }
+	    );
+	    console.log(response.data)
+	    if (response.data) {
+	      editor?.chain().focus().setImage({ src: response.data.image }).run();
+	    }
+	};
+
 	return (
 			<FloatingMenu 
 				className={classNames({
@@ -113,7 +135,7 @@ export default function FloatingMenuBar({editor,showPlusButton,showFloatingMenu,
 			        accept="image/png, image/jpeg, image/jpg"
 			        type="file"
 			        onInput={(e) => {
-			          addImage(e);
+			          uploadImage(e);
 			        }}
 			      />
 

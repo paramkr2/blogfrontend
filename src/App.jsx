@@ -2,7 +2,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import PostListPage from './pages/PostListPage.jsx';
-import PostEditPage from './pages/PostEditPage.jsx';
+import BlogEditPage from './pages/BlogEditPage.jsx';
 import PostPreviewPage from './pages/PostPreviewPage.jsx'; 
 import PostCreatePage from './pages/PostCreatePage.jsx'; 
 import HomePage from './pages/HomePage.jsx'; // New HomePage component
@@ -20,7 +20,7 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} /> {/* Homepage route */}
           <Route path="/postlist" element={<PostListPage />} />
-          <Route path="/:postId/edit" element={<PostEditPage />} />
+          <Route path="/blog/:postId/edit" element={<BlogEditPage />} />
           <Route path="/posts/preview" element={<PostPreviewPage />} />
           <Route path="/create" element={<PostCreatePage/>} /> 
           <Route path="/login" element={<Login/>} /> 
