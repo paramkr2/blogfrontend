@@ -3,25 +3,28 @@ import RichTextEditor from '../components/RichTextEditor.jsx';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import './styles/PostEditPage.css';
-import { Button, TextField, Box, IconButton } from '@mui/material';
+import { Button, TextField, Box, CircularProgress } from '@mui/material';
 import { Save as SaveIcon, Delete as DeleteIcon, Preview as PreviewIcon } from '@mui/icons-material'; // Import MUI icons
 
 function BlogEditPage() {
   const { postId } = useParams();
   const [title, setTitle] = useState('');
-  const [content, setContent] = useState(`
-      <p>Click on the plus button on a new line to see the floating menu</p>
-      <p>Select the content to see the bubble menu</p>
-  `);
+  const [content, setContent] = useState('');
+  const [isLoading, setIsLoading] = useState(true); // Track loading state
   const navigate = useNavigate();
 
   useEffect(() => {
     axios.get(`${import.meta.env.VITE_API_URL}/api/posts/${postId}/`)
       .then((response) => {
-        setContent(response.data.content);
+        console.log(response.data.content);
         setTitle(response.data.title);
+        setContent(response.data.content);
+        setIsLoading(false); // Set loading to false when data is fetched
       })
-      .catch((error) => console.error('Error fetching post:', error));
+      .catch((error) => {
+        console.error('Error fetching post:', error);
+        setIsLoading(false); // Handle error case
+      });
   }, [postId]);
 
   const handleSavePublish = () => {
@@ -90,49 +93,57 @@ function BlogEditPage() {
 
   return (
     <Box className='edit post-content' sx={{ padding: '20px' }}>
-      <TextField
-        label="Post Title"
-        variant="outlined"
-        fullWidth
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        sx={{ marginBottom: '20px' }}
-      />
-      <RichTextEditor onUpdate={setContent} content={content} />
-      <Box sx={{ marginTop: '20px', display: 'flex', gap: '10px' }}>
-        <Button 
-          variant="contained" 
-          color="success" 
-          onClick={handleSavePublish}
-          startIcon={<SaveIcon />}
-        >
-          Save and Publish Post
-        </Button>
-        <Button 
-          variant="contained" 
-          color="primary" 
-          onClick={handleSaveDraft}
-          startIcon={<SaveIcon />}
-        >
-          Save as Draft Post
-        </Button>
-        <Button 
-          variant="outlined" 
-          color="info" 
-          onClick={handlePreview}
-          startIcon={<PreviewIcon />}
-        >
-          Preview Post
-        </Button>
-        <Button 
-          variant="outlined" 
-          color="error" 
-          onClick={handleDelete}
-          startIcon={<DeleteIcon />}
-        >
-          Delete Post
-        </Button>
-      </Box>
+      {isLoading ? (
+        <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
+          <CircularProgress />
+        </Box>
+      ) : (
+        <>
+          <TextField
+            label="Post Title"
+            variant="outlined"
+            fullWidth
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            sx={{ marginBottom: '20px' }}
+          />
+          <RichTextEditor onUpdate={setContent} content={content} />
+          <Box sx={{ marginTop: '20px', display: 'flex', gap: '10px' }}>
+            <Button 
+              variant="contained" 
+              color="success" 
+              onClick={handleSavePublish}
+              startIcon={<SaveIcon />}
+            >
+              Save and Publish Post
+            </Button>
+            <Button 
+              variant="contained" 
+              color="primary" 
+              onClick={handleSaveDraft}
+              startIcon={<SaveIcon />}
+            >
+              Save as Draft Post
+            </Button>
+            <Button 
+              variant="outlined" 
+              color="info" 
+              onClick={handlePreview}
+              startIcon={<PreviewIcon />}
+            >
+              Preview Post
+            </Button>
+            <Button 
+              variant="outlined" 
+              color="error" 
+              onClick={handleDelete}
+              startIcon={<DeleteIcon />}
+            >
+              Delete Post
+            </Button>
+          </Box>
+        </>
+      )}
     </Box>
   );
 }

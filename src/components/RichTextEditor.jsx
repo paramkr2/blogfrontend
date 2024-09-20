@@ -1,17 +1,23 @@
-import React , {useState} from "react";
+import React , {useState,useEffect} from "react";
+
 import { useEditor, EditorContent, BubbleMenu } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import TextAlign from "@tiptap/extension-text-align";
 import Highlight from "@tiptap/extension-highlight";
+import Document from '@tiptap/extension-document'
 import Link from "@tiptap/extension-link";
 import Image from '@tiptap/extension-image';
-
+import Placeholder from '@tiptap/extension-placeholder'
 
 import {BubbleMenuBar} from './BubbleMenuBar';
 import FloatingMenuBar from './FloatingMenuBar';
 import './editor.css';
 
 import { Node } from '@tiptap/core';
+
+const CustomDocument = Document.extend({
+  content: 'heading block*',
+})
 
 const YouTubeEmbed = Node.create({
   name: 'youtubeEmbed',
@@ -69,14 +75,26 @@ export default function Editor({ content, onUpdate }) {
 
   const editor = useEditor({
     extensions: [
-      StarterKit,
+      CustomDocument,
+      StarterKit.configure({
+        document: false,
+      }),
       Link.configure({
         openOnClick: false, // Open the link on click
       }),
       Image,
-       YouTubeEmbed,
+      YouTubeEmbed,
+      Placeholder.configure({
+        placeholder: ({ node }) => {
+          if (node.type.name === 'heading') {
+            return 'What’s the title?'
+          }
+
+          return 'Write up...'
+        },
+      }),
     ],
-    content: content,
+    content:content ,
     onUpdate: ({ editor }) => {
       onUpdate(editor.getHTML());
     },
@@ -86,6 +104,8 @@ export default function Editor({ content, onUpdate }) {
       },
     }
   });
+
+
 
   return (
   <div className="editor-box">

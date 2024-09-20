@@ -9,12 +9,23 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.edit h1 {
-  text-align: center;
-  margin-bottom: 20px;
-  color: #333;
-}
+.is-empty:first-child::before {
+    --gray-4: #D3D3D3;
+    color: var(--gray-4);
+    content: attr(data-placeholder);
+    float: left;
+    height: 0;
+    pointer-events: none;
+  }
 
+.is-empty::before {
+    --gray-4: #D3D3D3;
+    color: var(--gray-4);
+    content: attr(data-placeholder);
+    float: left;
+    height: 0;
+    pointer-events: none;
+  }
 
 /* src/pages/PostCreatePage.css */
 .post-content {

@@ -6,11 +6,10 @@ import { useNavigate } from 'react-router-dom';
 import './styles/PostEditPage.css'
 
 function PostCreatePage() {
-  const [title, setTitle] = useState('');  // New state for title
   const [content, setContent] = useState(`
-      <p>Click on the plus button on a new line to see the floating menu</p>
-      <p>Select the content to see the bubble menu</p>
-      `);
+      <h1></h1>
+      <p></p>
+  `);
   const navigate = useNavigate();
 
   const handleSavePublish = () => {
@@ -24,7 +23,7 @@ function PostCreatePage() {
 
     axios.post(
       `${import.meta.env.VITE_API_URL}/api/posts/`, 
-      { title,content , is_published },
+      { content , is_published },
       {
         headers: {
           'Authorization': `Bearer ${token}`, 
@@ -46,7 +45,7 @@ function PostCreatePage() {
     
     axios.post(
       `${import.meta.env.VITE_API_URL}/api/posts/`, 
-      { title,content  },
+      { content  },
       {
         headers: {
           'Authorization': `Bearer ${token}`, 
@@ -68,14 +67,6 @@ function PostCreatePage() {
 
   return (
     <div className='edit post-content'>
-       {/* Input for title */}
-      <input
-        type="text"
-        placeholder="Post Title"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        className="post-title-input"
-      />
       <RichTextEditor onUpdate={setContent} content={content} />
       <button onClick={handleSavePublish}>Save and Publish Post </button>
       <button onClick={handleSaveDraft}> Save as Draft Post </button> 

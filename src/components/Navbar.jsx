@@ -24,6 +24,19 @@ export default function Navbar() {
     }
   }, []);
 
+  const scrollToAbout = (e) => {
+    e.preventDefault();
+    const aboutSection = document.getElementById("servies");
+    aboutSection.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const scrollToContact = (e) => {
+    e.preventDefault();
+    const aboutSection = document.getElementById("contact");
+    aboutSection.scrollIntoView({ behavior: "smooth" });
+  };
+
+
   return (
     <nav className="navbar">
       <div className="navbar-container">
@@ -31,8 +44,8 @@ export default function Navbar() {
         <ul className="nav-links">
           <li><a href="/">Home</a></li>
           <li><a href="/Blog">Blog</a></li>
-          <li><a href="/about">About</a></li>
-          <li><a href="/contact">Contact</a></li>
+          <li><a href="#servies" onClick={scrollToAbout}>Servies</a></li>
+          <li><a href="#contact" onClick={scrollToContact}>Contact</a></li>
           {isLoggedIn && <li><a href="/admin">Admin</a></li>}
           {!isLoggedIn && <li><a href="/login">Login</a></li>}
         </ul>

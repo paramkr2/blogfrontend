@@ -1,4 +1,4 @@
-import React,{useRef} from 'react';
+import React,{useRef,useState} from 'react';
 import {FloatingMenu,useEditor} from '@tiptap/react'
 
 import { Image as ImageIcon, List as ListIcon, Film as FilmIcon} from 'react-bootstrap-icons'; // Using Bootstrap Icons
@@ -17,14 +17,31 @@ import axios from 'axios';
 
 export default function FloatingMenuBar({editor,showPlusButton,showFloatingMenu,setShowFloatingMenu}){
 	
+	const [firstBlock,setFirstBlock] = useState(false);
+
+	const isInFirstBlock = () => {
+	  const { from } = editor.state.selection; // Current selection starting point
+	  const resolvedPos = editor.state.doc.resolve(from); // Resolve position of selection
+	  const firstBlockPos = editor.state.doc.content.firstChild; // Get first block in the document
+	  
+	  // Check if the resolved position is inside the first block node
+	  return resolvedPos.start() === 1; // The first block's start position is always 1
+	};
+
 	const hiddenFileInput = useRef() ;
 	const shouldFloatingMenuShow = (editor) => {
+		console.log('here')
 	    const { selection } = editor.state;
 	    // If the selection is not empty, do not show the floating menu.
 	    // If depth is 1, it means the selection is in the top level of the document.
 	    // ol, ul depth will not be 1, so we need to check if the selection is in the top level.
 	    if (!selection.empty || selection.$head.parent.content.size > 0 || selection.$head.depth !== 1) {
 	      return false;
+	    }
+
+	    // dont show the plus button if on the first blok 
+	    if( isInFirstBlock() ){
+	    	return false ;
 	    }
 	    return true;
 	};

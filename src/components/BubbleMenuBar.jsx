@@ -7,8 +7,7 @@ import {LinkSelector} from './LinkSelector.jsx'
 
 export const BubbleMenuBar = ({ editor, showBubbleMenu, showLinkSelector, setShowLinkSelector }) => {
   
-
-
+ 
 
   const items = [
     {
