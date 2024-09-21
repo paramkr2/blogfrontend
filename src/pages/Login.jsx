@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import './styles/Login.css';
 
 const LoginPage = () => {
@@ -8,6 +9,7 @@ const LoginPage = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const { isLoggedIn,setIsLoggedIn } = useAuth();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -22,7 +24,7 @@ const LoginPage = () => {
 
       // Store JWT token in localStorage
       localStorage.setItem('token', token);
-
+      setIsLoggedIn(true);
       // Redirect to /blog
       navigate('/blog');
     } catch (err) {

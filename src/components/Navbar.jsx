@@ -1,10 +1,24 @@
 
 import React, { useEffect, useState } from 'react';
 import {jwtDecode } from 'jwt-decode';
+import { useAuth } from '../context/AuthContext';
 import './Navbar.css';
 
 export default function Navbar() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { isLoggedIn , setIsLoggedIn} = useAuth();
+
+
+  const scrollToAbout = (e) => {
+    e.preventDefault();
+    const aboutSection = document.getElementById("servies");
+    aboutSection.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const scrollToContact = (e) => {
+    e.preventDefault();
+    const aboutSection = document.getElementById("contact");
+    aboutSection.scrollIntoView({ behavior: "smooth" });
+  };
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -23,18 +37,6 @@ export default function Navbar() {
       }
     }
   }, []);
-
-  const scrollToAbout = (e) => {
-    e.preventDefault();
-    const aboutSection = document.getElementById("servies");
-    aboutSection.scrollIntoView({ behavior: "smooth" });
-  };
-
-  const scrollToContact = (e) => {
-    e.preventDefault();
-    const aboutSection = document.getElementById("contact");
-    aboutSection.scrollIntoView({ behavior: "smooth" });
-  };
 
 
   return (

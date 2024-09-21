@@ -3,8 +3,10 @@ import { Tabs, Tab, Box, Button, Skeleton, Grid, Pagination } from '@mui/materia
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
+import { useAuth } from '../context/AuthContext';
 
 function AdminPage() {
+  const { isLoggedIn , setIsLoggedIn} = useAuth();
   const [tabValue, setTabValue] = useState(0);
   const [publishedPosts, setPublishedPosts] = useState([]);
   const [draftPosts, setDraftPosts] = useState([]);
@@ -24,7 +26,9 @@ function AdminPage() {
   };
 
   const handleLogout = () => {
+    setIsLoggedIn(false);
     localStorage.removeItem('token');
+
     navigate('/login');
   };
 
