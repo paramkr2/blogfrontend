@@ -2,7 +2,7 @@ import React,{useRef,useState} from 'react';
 import {FloatingMenu,useEditor} from '@tiptap/react'
 
 import { Image as ImageIcon, List as ListIcon, Film as FilmIcon} from 'react-bootstrap-icons'; // Using Bootstrap Icons
-import { ListOrdered, Minus } from "lucide-react";
+import { ListOrdered, Minus ,Code} from "lucide-react";
 import { motion } from "framer-motion";
 
 import classNames from "classnames";
@@ -28,6 +28,14 @@ export default function FloatingMenuBar({editor,showPlusButton,showFloatingMenu,
 	  return resolvedPos.start() === 1; // The first block's start position is always 1
 	};
 
+	const isCodeBlock = () => {
+	  const { $head } = editor.state.selection;
+	  const parentNode = $head.parent;
+
+	  // Check if the parent node is a code block (using the node type name)
+	  return parentNode.type.name === 'codeBlock';
+	};
+
 	const hiddenFileInput = useRef() ;
 	const shouldFloatingMenuShow = (editor) => {
 		console.log('here')
@@ -40,7 +48,7 @@ export default function FloatingMenuBar({editor,showPlusButton,showFloatingMenu,
 	    }
 
 	    // dont show the plus button if on the first blok 
-	    if( isInFirstBlock() ){
+	    if( isInFirstBlock() || isCodeBlock() ){
 	    	return false ;
 	    }
 	    return true;
@@ -89,8 +97,16 @@ export default function FloatingMenuBar({editor,showPlusButton,showFloatingMenu,
 	      isActive: () => editor.isActive("horizontalRule"),
 	      command: () => editor.chain().focus().setHorizontalRule().run(),
 	      icon: <Minus style={{ fontSize: '20px', color: '#1a8917' }}  strokeWidth={1} />,
-	    }
+	    },
+	    {
+	    	name:"CodeBlock",
+	    	isActive: () => editor.isActive("CodeBlock"),
+	    	command: () => editor.chain().focus().setCodeBlock().run(),
+	      	icon: <Code style={{ fontSize: '20px', color: '#1a8917' }}  strokeWidth={1} />,
+		}
 	]
+
+	
 
 	const ref = useOutsideClick(() => {
 	    setShowFloatingMenu(false);
@@ -160,8 +176,8 @@ export default function FloatingMenuBar({editor,showPlusButton,showFloatingMenu,
 				  <div
 				    style={{
 				      position: 'absolute',
-				      left: '-20px',
-				      top: '-25px',
+				      left: '-10px',
+				      top: '-23px',
 				      zIndex: 9999,
 				      display: 'flex',
 				      height: '40px',
@@ -186,8 +202,10 @@ export default function FloatingMenuBar({editor,showPlusButton,showFloatingMenu,
 				          alignItems: 'center',
 				          justifyContent: 'center',
 				          color: item.isActive() ? 'rgb(75, 85, 99)' : 'rgb(156, 163, 175)',  // gray-600 or gray-400
+				        	
 				        }}
 				        onClick={item.command}
+
 				      >
 				        {item.icon}
 				      </motion.button>

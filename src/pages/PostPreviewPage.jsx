@@ -10,7 +10,7 @@ function PostPreviewPage() {
 
   return (
     <div className="post-detail">
-      <h1 className="post-content " >{title}</h1>
+      <h1 className="post-content post-heading" >{title}</h1>
       <div
         className="post-content"
         dangerouslySetInnerHTML={{ __html: content }}  // Render HTML content safely

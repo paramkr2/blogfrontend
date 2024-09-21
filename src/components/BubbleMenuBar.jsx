@@ -15,28 +15,28 @@ export const BubbleMenuBar = ({ editor, showBubbleMenu, showLinkSelector, setSho
       disable: () => editor.isActive("heading"),
       isActive: () => editor.isActive("bold"),
       command: () => editor.chain().focus().toggleBold().run(),
-      icon: <BoldIcon className="size-[21px]" />,
+      icon: <BoldIcon style={{ fontSize: '21px' }} />,
     },
     {
       name: "italic",
       disable: () => editor.isActive("heading"),
       isActive: () => editor.isActive("italic"),
       command: () => editor.chain().focus().toggleItalic().run(),
-      icon: <ItalicIcon className="size-[21px]" />,
+      icon: <ItalicIcon style={{ fontSize: '21px' }} />,
     },
     {
       name: "underline",
       disable: () => editor.isActive("heading"),
       isActive: () => editor.isActive("underline"),
       command: () => editor.chain().focus().toggleUnderline().run(),
-      icon: <UnderlineIcon className="size-[21px]" />,
+      icon: <UnderlineIcon style={{ fontSize: '21px' }} />,
     },
     {
       name: "strike",
       disable: () => editor.isActive("heading"),
       isActive: () => editor.isActive("strike"),
       command: () => editor.chain().focus().toggleStrike().run(),
-      icon: <Strikethrough className="size-[21px]" />,
+      icon: <Strikethrough style={{ fontSize: '21px' }} />,
     },
     {
       name: "link",
@@ -45,25 +45,25 @@ export const BubbleMenuBar = ({ editor, showBubbleMenu, showLinkSelector, setSho
       command: () => {
         setShowLinkSelector(!showLinkSelector);
       },
-      icon: <Link className="size-[21px]" />,
+      icon: <Link style={{ fontSize: '21px' }} />,
     },
     {
       name: "heading2",
       isActive: () => editor.isActive("heading", { level: 2 }),
       command: () => editor.chain().focus().toggleHeading({ level: 2 }).run(),
-      icon: <Type className="size-[21px]" />,
+      icon: <Type style={{ fontSize: '21px' }} />,
     },
     {
       name: "heading3",
       isActive: () => editor.isActive("heading", { level: 3 }),
       command: () => editor.chain().focus().toggleHeading({ level: 3 }).run(),
-      icon: <Type className="size-[15px]" />,
+      icon: <Type style={{ fontSize: '15px' }} />,
     },
     {
       name: "blockquote",
       isActive: () => editor.isActive("blockquote"),
       command: () => editor.chain().focus().toggleBlockquote().run(),
-      icon: <Quote className="size-[21px]" />,
+      icon: <Quote style={{ fontSize: '21px' }} />,
     },
   ];
   

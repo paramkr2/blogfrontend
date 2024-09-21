@@ -2,12 +2,19 @@ import React , {useState,useEffect} from "react";
 
 import { useEditor, EditorContent, BubbleMenu } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
+
 import TextAlign from "@tiptap/extension-text-align";
 import Highlight from "@tiptap/extension-highlight";
+import Underline from '@tiptap/extension-underline'
 import Document from '@tiptap/extension-document'
 import Link from "@tiptap/extension-link";
 import Image from '@tiptap/extension-image';
 import Placeholder from '@tiptap/extension-placeholder'
+
+import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight'
+import { all, createLowlight } from 'lowlight'
+import js from 'highlight.js/lib/languages/javascript'
+
 
 import {BubbleMenuBar} from './BubbleMenuBar';
 import FloatingMenuBar from './FloatingMenuBar';
@@ -15,17 +22,18 @@ import './editor.css';
 
 import { Node } from '@tiptap/core';
 
+
+const lowlight = createLowlight(all)
+lowlight.register('js', js)
+
 const CustomDocument = Document.extend({
   content: 'heading block*',
 })
 
 const YouTubeEmbed = Node.create({
   name: 'youtubeEmbed',
-
   group: 'block',
-
   atom: true,
-
   addAttributes() {
     return {
       src: {
@@ -76,13 +84,18 @@ export default function Editor({ content, onUpdate }) {
   const editor = useEditor({
     extensions: [
       CustomDocument,
+      Underline,
       StarterKit.configure({
         document: false,
       }),
       Link.configure({
         openOnClick: false, // Open the link on click
       }),
-      Image,
+      Image.configure({
+        HTMLAttributes: {
+          class: 'editor-image', // Add a custom class for image resizing
+        },
+      }),
       YouTubeEmbed,
       Placeholder.configure({
         placeholder: ({ node }) => {
@@ -92,6 +105,9 @@ export default function Editor({ content, onUpdate }) {
 
           return 'Write up...'
         },
+      }),
+      CodeBlockLowlight.configure({
+        lowlight,
       }),
     ],
     content:content ,
