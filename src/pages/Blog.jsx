@@ -66,30 +66,43 @@ const Blog = () => {
           posts.map((post) => (
             <Grid item xs={12} md={12} key={post.id}>
               <Link to={`/blog/${post.id}`} style={{ textDecoration: 'none' }}>
-                <Card sx={{ display: { xs: 'block', md: 'flex' }, height: '100%' }}>
+                <Card sx={{ display: { xs: 'block', md: 'flex' } }}>
                   <CardMedia
                     component="img"
-                    height="200"
+                    height="240px"
                     image={post.image || tradingImage}
-                    alt={'image'}
+                    alt="post image"
                     sx={{ width: { xs: '100%', md: '40%' }, objectFit: 'cover' }}
                   />
-                  <CardContent sx={{ flex: 1 }}>
-                    <Typography variant="h5">{post.title}</Typography>
-                    <Typography
-                      variant="body2"
-                      color="text.secondary"
-                      sx={{
-                        flex: 1,
+                  <CardContent
+                    sx={{
+                      flex: 1,
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'space-between',
+                      height: '200px', // Match height to CardMedia
+                    }}
+                  >
+                    <Typography variant="h5" sx={{ fontWeight: 'bold', color: 'black' }}>{post.title}</Typography>
+
+                    {/* Wrapping HTML content in a div */}
+                    <div
+                      style={{
+                        position: 'relative',
+                        height: '200px', // Adjust the height to match the text area
                         overflow: 'hidden',
-                        display: '-webkit-box',
-                        WebkitBoxOrient: 'vertical',
-                        WebkitLineClamp: { xs: 5, md: 3 },
-                        marginTop: '10px',
                       }}
                     >
-                      {post.truncated_content}
-                    </Typography>
+                      <div
+                        dangerouslySetInnerHTML={{ __html: post.truncated_content }}
+                        style={{
+                          height: '100%',
+                          WebkitMaskImage: 'linear-gradient(to bottom, rgba(0, 0, 0, 1) 30%, rgba(0, 0, 0, 0.7) 70%, rgba(0, 0, 0, 0) 100%)', // Thicker fade effect
+                maskImage: 'linear-gradient(to bottom, rgba(0, 0, 0, 1) 30%, rgba(0, 0, 0, 0.7) 70%, rgba(0, 0, 0, 0) 100%)',
+                        }}
+                      />
+                    </div>
+                     
                   </CardContent>
                 </Card>
               </Link>
