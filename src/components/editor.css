@@ -1,4 +1,7 @@
 
+
+
+
 .editor-content {
   outline: none;
   border: none;
@@ -15,6 +18,8 @@
 .editor-image {
   max-width: 100%; /* Make sure images don't exceed the editor width */
   height: auto;    /* Maintain aspect ratio */
+  display: block;
+  margin: 0 auto ;
 }
 .post-content {
   :first-child {

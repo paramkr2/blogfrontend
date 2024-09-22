@@ -1,6 +1,6 @@
 import React,{useRef,useState} from 'react';
 import {FloatingMenu,useEditor} from '@tiptap/react'
-
+import CircularProgress from '@mui/material/CircularProgress';
 import { Image as ImageIcon, List as ListIcon, Film as FilmIcon} from 'react-bootstrap-icons'; // Using Bootstrap Icons
 import { ListOrdered, Minus ,Code} from "lucide-react";
 import { motion } from "framer-motion";
@@ -15,8 +15,15 @@ import { extractVideoId, generateEmbedUrl } from '../utils/video.js';
 import axios from 'axios';
 
 
-export default function FloatingMenuBar({editor,showPlusButton,showFloatingMenu,setShowFloatingMenu}){
+export default function FloatingMenuBar({
+	editor,
+	showPlusButton,
+	showFloatingMenu,
+	setShowFloatingMenu,
+	isUploading,
+	setIsUploading}){
 	
+
 	const [firstBlock,setFirstBlock] = useState(false);
 
 	const isInFirstBlock = () => {
@@ -113,17 +120,9 @@ export default function FloatingMenuBar({editor,showPlusButton,showFloatingMenu,
 	    console.log('this')
 	  });
 
-	const addImage = async (e) => {
-	    const file = (e.target).files?.[0];
-	    if (!file) return;
-	    const base64 = await convertFileToBase64(file);
-
-	    if (base64) {
-	      editor?.chain().focus().setImage({ src: base64 }).run();
-	    }
-	  };
 
 	 const uploadImage = async (e) => {
+	 	setIsUploading(true)
 	 	const file = (e.target).files?.[0];
 	    const formData = new FormData();
 	    formData.append('image', file);
@@ -143,6 +142,7 @@ export default function FloatingMenuBar({editor,showPlusButton,showFloatingMenu,
 	    if (response.data) {
 	      editor?.chain().focus().setImage({ src: response.data.image }).run();
 	    }
+	    setIsUploading(false)
 	};
 
 	return (
@@ -162,6 +162,7 @@ export default function FloatingMenuBar({editor,showPlusButton,showFloatingMenu,
 			        setShowFloatingMenu={setShowFloatingMenu}
 			    />
 
+			    
 			    <input
 			        ref={hiddenFileInput}
 			        hidden
@@ -171,6 +172,24 @@ export default function FloatingMenuBar({editor,showPlusButton,showFloatingMenu,
 			          uploadImage(e);
 			        }}
 			      />
+			     { isUploading && (
+				    <div style={{
+				      position: 'absolute',
+				      top: '0px',
+				      left: '30px',
+				      transform: 'translate(-50%, -50%)',
+				      zIndex: 9999,
+				      
+				      backdropFilter: 'blur(10px)', // Blurry background
+				      borderRadius: '20%', // Circular shape
+				      padding: '5px 2px', // Adjust padding for size
+				      textAlign: 'center',
+				    }}>
+				      <div  style={{  color: '#000' , display:'flex'}}> <CircularProgress color="success"/> </div>
+				      
+
+				    </div>
+				  )}
 
 				{showFloatingMenu && (
 				  <div

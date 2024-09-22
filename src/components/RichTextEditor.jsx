@@ -1,5 +1,7 @@
 import React , {useState,useEffect} from "react";
 
+import { LinearProgress, Box, Typography } from '@mui/material';
+
 import { useEditor, EditorContent, BubbleMenu } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 
@@ -76,6 +78,7 @@ const YouTubeEmbed = Node.create({
 
 
 export default function Editor({ content, onUpdate }) {
+  const [isUploading, setIsUploading] = useState(false);
   const [showLinkSelector, setShowLinkSelector] = useState(false);
   const [showBubbleMenu, setShowBubbleMenu] = useState(true);
   const [showFloatingMenu, setShowFloatingMenu] = useState(false);
@@ -118,7 +121,8 @@ export default function Editor({ content, onUpdate }) {
       attributes: {
         class: "editor-content",  // Apply custom class to editor content, makes focus outline none
       },
-    }
+    },
+    editable: !isUploading,
   });
 
 
@@ -126,6 +130,7 @@ export default function Editor({ content, onUpdate }) {
   return (
   <div className="editor-box">
     {/* The bubble menu bar for formatting options */}
+
     <BubbleMenuBar 
       editor={editor} 
       showBubbleMenu={showBubbleMenu} 
@@ -139,9 +144,12 @@ export default function Editor({ content, onUpdate }) {
       showPlusButton={showPlusButton}
       showFloatingMenu={showFloatingMenu}
       setShowFloatingMenu={setShowFloatingMenu}
+      isUploading={isUploading}
+      setIsUploading={setIsUploading}
     />
     
     {/* The main editor content */}
+
     <EditorContent editor={editor}  style={{ outline: 'none' }}  />
   </div>
 );

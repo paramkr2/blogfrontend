@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 import { useAuth } from '../context/AuthContext';
+import { Save as SaveIcon, Delete as DeleteIcon, Preview as PreviewIcon } from '@mui/icons-material';
+import Tooltip from '@mui/material/Tooltip';
 
 function AdminPage() {
   const { isLoggedIn , setIsLoggedIn} = useAuth();
@@ -15,6 +17,8 @@ function AdminPage() {
   const [draftPage, setDraftPage] = useState(1);
   const [publishedCount, setPublishedCount] = useState(0);
   const [draftCount, setDraftCount] = useState(0);
+  const [refreshData, setRefreshData] = useState(false);
+
   const navigate = useNavigate();
 
   const handleTabChange = (event, newValue) => {
@@ -61,7 +65,7 @@ function AdminPage() {
         console.error('Error fetching draft posts:', error);
       })
       .finally(() => setLoading(false));
-  }, [publishedPage, draftPage]);
+  }, [publishedPage, draftPage,refreshData]);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -102,6 +106,25 @@ function AdminPage() {
       );
     }
 
+    const handleDelete = (postId) => {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        console.error('No authentication token found. Please log in.');
+        return;
+      }
+
+      axios.delete(`${import.meta.env.VITE_API_URL}/api/posts/${postId}/`, {
+        headers: { 'Authorization': `Bearer ${token}` },
+      })
+        .then(() => {
+          // Trigger a refresh of the data
+          setRefreshData(prev => !prev); // Toggle to trigger useEffect
+        })
+        .catch(error => console.error('Error deleting post:', error));
+    };
+
+
+
     return (
       <Grid container spacing={2}>
         {posts.map((post) => (
@@ -136,6 +159,22 @@ function AdminPage() {
                 >
                   Edit
                 </Button>
+                <Tooltip title="Delete" arrow>
+                  <Button
+                      variant="text" // Removes the outline
+                      color="secondary"
+                      onClick={() => handleDelete(post.id)}
+                      sx={{
+                          marginLeft: '10px',
+                          minWidth: 'auto',
+                          padding: 0,
+                      }}
+                      aria-label="Delete post"
+                  >
+                      <DeleteIcon />
+                  </Button>
+              </Tooltip>
+                                
               </div>
             </Box>
           </Grid>

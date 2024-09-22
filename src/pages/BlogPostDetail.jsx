@@ -12,6 +12,7 @@ const BlogPostDetail = () => {
     const fetchPostDetails = async () => {
       try {
         const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/posts/${postId}/`);
+        console.log(response.data);
         setPost(response.data);
       } catch (err) {
         setError('Failed to load post.');

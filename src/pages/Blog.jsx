@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { Grid, Card, CardContent, CardMedia, Typography, Pagination, Skeleton } from '@mui/material';
+import tradingImage  from './trading_default.jpg';
 import './styles/Blog.css';
 
 const Blog = () => {
@@ -15,7 +16,7 @@ const Blog = () => {
     const token = localStorage.getItem('token');
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_API_URL}/api/posts/?pageno=${page}`,
+        `${import.meta.env.VITE_API_URL}/api/posts/?type=published&pageno=${page}`,
         {
           headers: { 'Authorization': `Bearer ${token}` },
         }
@@ -69,8 +70,8 @@ const Blog = () => {
                   <CardMedia
                     component="img"
                     height="200"
-                    image={post.image}
-                    alt={post.title}
+                    image={post.image || tradingImage}
+                    alt={'image'}
                     sx={{ width: { xs: '100%', md: '40%' }, objectFit: 'cover' }}
                   />
                   <CardContent sx={{ flex: 1 }}>

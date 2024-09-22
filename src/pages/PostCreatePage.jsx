@@ -66,6 +66,7 @@ function PostCreatePage() {
       .then((response) => {
         setLoadingDraft(false);
         setNotification({ open: true, message: 'Draft saved successfully!' });
+        navigate(`/blog/${response.data.id}/edit`);
         setIsSaved(true); // Mark content as saved
       })
       .catch((error) => {
@@ -97,12 +98,13 @@ function PostCreatePage() {
       {
         headers: {
           Authorization: `Bearer ${token}`,
-        },
+        }
       }
     )
       .then((response) => {
         setLoadingPublish(false);
-        navigate(`/posts/${response.data.id}/view`);
+        console.log(response.data);
+        navigate(`/blog/${response.data.id}`);
         setIsSaved(true); // Mark content as saved
       })
       .catch((error) => {
@@ -114,6 +116,11 @@ function PostCreatePage() {
 
   const handleCloseNotification = () => {
     setNotification({ ...notification, open: false });
+  };
+  const handlePreview = () => {
+    const { title, finalContent } = extractTitleAndCleanContent(content);
+    const previewUrl = `${window.location.origin}/posts/preview?title=${encodeURIComponent(title)}&content=${encodeURIComponent(finalContent)}`;
+    window.open(previewUrl, '_blank');
   };
 
   return (
@@ -139,6 +146,14 @@ function PostCreatePage() {
           disabled={loadingDraft}  // Disable the button while loading
         >
           {loadingDraft ? 'Saving...' : 'Save as Draft'}
+        </Button>
+        <Button
+          variant="outlined"
+          color="info"
+          onClick={handlePreview}
+          startIcon={<PreviewIcon />}
+        >
+          Preview Post
         </Button>
       </Box>
 

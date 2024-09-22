@@ -8,6 +8,7 @@ import { Save as SaveIcon, Delete as DeleteIcon, Preview as PreviewIcon } from '
 import { parse } from 'node-html-parser';
 
 function BlogEditPage() {
+
   const { postId } = useParams();
   const [content, setContent] = useState('');
   const [isLoading, setIsLoading] = useState(true);
@@ -134,7 +135,7 @@ function BlogEditPage() {
         </Box>
       ) : (
         <>
-          <RichTextEditor onUpdate={setContent} content={content} />
+          <RichTextEditor onUpdate={setContent} content={content}  />
           <Box sx={{ marginTop: '20px', display: 'flex', gap: '10px' }}>
             <Button
               variant="contained"

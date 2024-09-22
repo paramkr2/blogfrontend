@@ -1,7 +1,6 @@
 // src/App.jsx
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import PostListPage from './pages/PostListPage.jsx';
 import BlogEditPage from './pages/BlogEditPage.jsx';
 import PostPreviewPage from './pages/PostPreviewPage.jsx'; 
 import PostCreatePage from './pages/PostCreatePage.jsx'; 
@@ -19,7 +18,6 @@ function App() {
       <div style={{marginTop:'100px'}}> 
         <Routes>
           <Route path="/" element={<HomePage />} /> {/* Homepage route */}
-          <Route path="/postlist" element={<PostListPage />} />
           <Route path="/blog/:postId/edit" element={<BlogEditPage />} />
           <Route path="/posts/preview" element={<PostPreviewPage />} />
           <Route path="/create" element={<PostCreatePage/>} /> 
