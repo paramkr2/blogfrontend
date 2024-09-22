@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Tabs, Tab, Box, Button, Skeleton, Grid, Pagination } from '@mui/material';
+import { Tabs, Tab, Box, Button, Skeleton, Grid, Pagination , Typography , Tooltip } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 import { useAuth } from '../context/AuthContext';
-import { Save as SaveIcon, Delete as DeleteIcon, Preview as PreviewIcon } from '@mui/icons-material';
-import Tooltip from '@mui/material/Tooltip';
+import { Save as SaveIcon, Delete as DeleteIcon, Preview as PreviewIcon , Edit as EditIcon } from '@mui/icons-material';
 
 function AdminPage() {
   const { isLoggedIn , setIsLoggedIn} = useAuth();
@@ -139,26 +138,43 @@ function AdminPage() {
                 borderRadius: '5px',
               }}
             >
-              <div>
-                <h3>{post.title}</h3>
-                <p>{post.excerpt}</p>
-              </div>
-              <div>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={() => navigate(`/blog/${post.id}`)}
-                >
-                  View
-                </Button>
-                <Button
-                  variant="outlined"
-                  color="secondary"
-                  onClick={() => navigate(`/blog/${post.id}/edit`)}
-                  sx={{ marginLeft: '10px' }}
-                >
-                  Edit
-                </Button>
+              <Tooltip title={post.title}>
+                <Typography noWrap variant="h6" component="h3" sx={{ maxWidth: '800px' }}>
+                  {post.title}
+                </Typography>
+              </Tooltip>
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                
+                <Tooltip title="View" arrow>
+                  <Button
+                      variant="text"
+                      color="primary"
+                      onClick={() => navigate(`/blog/${post.id}`)}
+                      sx={{
+                          marginLeft: '10px',
+                          minWidth: 'auto',
+                          padding: 0,
+                      }}
+                      aria-label="Preview post"
+                  >
+                      <PreviewIcon />
+                  </Button>
+                </Tooltip>
+                <Tooltip title="Edit" arrow>
+                  <Button
+                      variant="text" // Removes the outline
+                      color="secondary"
+                      onClick={() => navigate(`/blog/${post.id}/edit`)}
+                      sx={{
+                          marginLeft: '10px',
+                          minWidth: 'auto',
+                          padding: 0,
+                      }}
+                      aria-label="Edit post"
+                  >
+                      <EditIcon />
+                  </Button>
+              </Tooltip>
                 <Tooltip title="Delete" arrow>
                   <Button
                       variant="text" // Removes the outline
