@@ -1,107 +1,106 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { Grid, Paper, Typography , Pagination  } from '@mui/material';
+import { Grid, Card, CardContent, CardMedia, Typography, Pagination, Skeleton } from '@mui/material';
 import './styles/Blog.css';
 
 const Blog = () => {
   const [posts, setPosts] = useState([]);
-  const [error, setError] = useState('');
-  const [currentPage, setCurrentPage] = useState(1); // Track current page
-  const [totalPages, setTotalPages] = useState(0);  // Track total pages
-
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const [loading, setLoading] = useState(true); // Track loading state
 
   const fetchBlogPosts = async (page = 1) => {
-    const token = localStorage.getItem('token'); // Get token from local storage
+    setLoading(true); // Set loading to true while fetching
+    const token = localStorage.getItem('token');
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_API_URL}/api/posts/?pageno=${page}`, // Send the page number as a query parameter
+        `${import.meta.env.VITE_API_URL}/api/posts/?pageno=${page}`,
         {
-          headers: {
-            'Authorization': `Bearer ${token}`, 
-          },
+          headers: { 'Authorization': `Bearer ${token}` },
         }
       );
       setPosts(response.data.results);
-      setTotalPages(Math.ceil(response.data.count / 5)); // Calculate total pages (assuming 10 posts per page)
+      setTotalPages(Math.ceil(response.data.count / 5));
+      setLoading(false); // Set loading to false once data is fetched
     } catch (err) {
-      console.error("API call failed:", err);
-      setError('Failed to fetch posts from API');
-      setPosts(hardcodedPosts()); 
+      setPosts(hardcodedPosts());
+      setLoading(false);
     }
   };
 
-  const hardcodedPosts = () => {
-    return [
-      {
-        id: 1,
-        title: 'Understanding React Lifecycle',
-        truncated_content: 'React Lifecycle methods explained in detail...',
-        image: 'path_to_image1.jpg' // Placeholder image paths
-      },
-      {
-        id: 2,
-        title: 'Introduction to Tailwind CSS',
-        truncated_content: 'Tailwind CSS is a utility-first CSS framework...',
-        image: 'path_to_image2.jpg'
-      },
-      // Add more posts as needed
-    ];
-  };
-
   useEffect(() => {
-    fetchBlogPosts(currentPage); // Fetch posts when the component mounts or page changes
+    fetchBlogPosts(currentPage);
   }, [currentPage]);
 
   const handlePageChange = (event, value) => {
-    setCurrentPage(value); // Update the current page
+    setCurrentPage(value);
   };
+
   return (
     <div className="blog-page">
-      <h1>Latest Blog Posts</h1>
-      {error && <p className="error">{error}</p>}
-      <div className="blog-list">
-        {posts.map((post) => (
-          <Link key={post.id} to={`/blog/${post.id}`} style={{ textDecoration: 'none' }}>
-            <Paper elevation={0} style={{ marginBottom: '20px', padding: '16px' }}>
-              <Grid container spacing={4}> {/* Increased spacing between columns */}
-                <Grid item xs={5} style={{padding:'16px'}}> {/* Adjusted width for better balance */}
-                  <div style={{ height: '15em', overflow: 'hidden' }}>
-                    <img 
-                      src={post.image} 
-                      alt={post.title} 
-                      style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '8px' }} 
-                    />
-                  </div>
-                </Grid>
-                <Grid item xs={7} style={{ backgroundColor: '#f5f5f5', padding: '16px', borderRadius: '8px' }}>
-                  <Typography variant="h4" gutterBottom>{post.title}</Typography>
-                  <Typography variant="body2" style={{  marginBottom: '12px' }}>{post.updated_at}</Typography>
-                  <Typography variant="body1" style={{ height: '7em', overflow: 'hidden', lineHeight: '1.5' }}>
-                    {post.truncated_content}
-                  </Typography>
-                </Grid>
-              </Grid>
-            </Paper>
-          </Link>
-        ))}
-      </div>
-      {/* Pagination controls using MUI Pagination */}
-      <div className="pagination-controls" style={{ marginTop: '20px', display: 'flex', justifyContent: 'center' }}>
-        <Pagination
-          count={totalPages} // Total number of pages
-          page={currentPage} // Current page
-          onChange={handlePageChange} // Handle page change
-          color="primary" // Optionally, use primary or secondary color
-          shape="rounded" // Rounded shape for pagination
-        />
+      <Grid container spacing={4}>
+        {loading ? (
+          // Skeleton loading while waiting for posts
+          Array.from(new Array(3)).map((_, index) => (
+            <Grid item xs={12} md={12} key={index}>
+              <Card sx={{ display: { xs: 'block', md: 'flex' }, height: '100%' }}>
+                <Skeleton
+                  variant="rectangular"
+                  height={200}
+                  sx={{ width: { xs: '100%', md: '40%' }, objectFit: 'cover' }}
+                />
+                <CardContent sx={{ flex: 1 }}>
+                  <Skeleton variant="text" height={40} />
+                  <Skeleton variant="text" height={20} />
+                  <Skeleton variant="text" height={20} sx={{ width:'50%'}} />
+                  <Skeleton variant="text" height={20} sx={{ width:'70%'}} />
+                  <Skeleton variant="text" height={20} sx={{ width:'50%'}} />
+                  <Skeleton variant="text" height={20} sx={{ width:'90%'}} />
+                </CardContent>
+              </Card>
+            </Grid>
+          ))
+        ) : (
+          posts.map((post) => (
+            <Grid item xs={12} md={12} key={post.id}>
+              <Link to={`/blog/${post.id}`} style={{ textDecoration: 'none' }}>
+                <Card sx={{ display: { xs: 'block', md: 'flex' }, height: '100%' }}>
+                  <CardMedia
+                    component="img"
+                    height="200"
+                    image={post.image}
+                    alt={post.title}
+                    sx={{ width: { xs: '100%', md: '40%' }, objectFit: 'cover' }}
+                  />
+                  <CardContent sx={{ flex: 1 }}>
+                    <Typography variant="h5">{post.title}</Typography>
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      sx={{
+                        flex: 1,
+                        overflow: 'hidden',
+                        display: '-webkit-box',
+                        WebkitBoxOrient: 'vertical',
+                        WebkitLineClamp: { xs: 5, md: 3 },
+                        marginTop: '10px',
+                      }}
+                    >
+                      {post.truncated_content}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Link>
+            </Grid>
+          ))
+        )}
+      </Grid>
+      <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
+        <Pagination count={totalPages} page={currentPage} onChange={handlePageChange} color="primary" />
       </div>
     </div>
-);
-
-
-
-
+  );
 };
 
 export default Blog;
