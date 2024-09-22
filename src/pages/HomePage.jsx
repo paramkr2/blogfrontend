@@ -77,13 +77,24 @@ export default function HomePage() {
                     >
                       {post.title}
                     </Typography>
-                    <Typography 
-                      variant="body2" 
-                      color="textSecondary"
-                      style={{ marginBottom: '12px', overflow: 'hidden' }}
+                    
+                    <div
+                      style={{
+                        position: 'relative',
+                        height: '200px', // Adjust the height to match the text area
+                        overflow: 'hidden',
+                      }}
                     >
-                      {post.excerpt || post.truncated_content.slice(0, 100)}
-                    </Typography>
+                      <div
+                        dangerouslySetInnerHTML={{ __html: post.truncated_content }}
+                        style={{
+                          height: '100%',
+                          WebkitMaskImage: 'linear-gradient(to bottom, rgba(0, 0, 0, 1) 30%, rgba(0, 0, 0, 0.7) 70%, rgba(0, 0, 0, 0) 100%)', // Thicker fade effect
+                maskImage: 'linear-gradient(to bottom, rgba(0, 0, 0, 1) 30%, rgba(0, 0, 0, 0.7) 70%, rgba(0, 0, 0, 0) 100%)',
+                        }}
+                      />
+                    </div>
+
                   </CardContent>
                   <Button 
                     variant="contained" 

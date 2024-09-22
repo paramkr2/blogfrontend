@@ -77,7 +77,7 @@ export default function Navbar() {
     >
       <Toolbar>
         <Typography variant="h6" sx={{ flexGrow: 1 }}>
-          CryptoGull
+          GullCapital
         </Typography>
         <IconButton
           edge="end"
