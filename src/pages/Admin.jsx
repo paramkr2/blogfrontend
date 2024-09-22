@@ -17,6 +17,7 @@ function AdminPage() {
   const [draftPage, setDraftPage] = useState(1);
   const [publishedCount, setPublishedCount] = useState(0);
   const [draftCount, setDraftCount] = useState(0);
+  const [deletingId, setDeletingId] = useState(0);
   
   const navigate = useNavigate();
 
@@ -35,35 +36,43 @@ function AdminPage() {
     navigate('/login');
   };
 
-  const refreshPostList = () => {
-    axios
-      .get(`${import.meta.env.VITE_API_URL}/api/posts?type=published&pagno=${publishedPage}`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-      })
-      .then((response) => {
+  const refreshPostList = async () => {
+    try {
+      let response = await axios.get(
+        `${import.meta.env.VITE_API_URL}/api/posts?type=published&pagno=${publishedPage}`, 
+        {headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },}
+      );
+
+      if (response.data && response.data.results) {
         setPublishedPosts(response.data.results || []);
         setPublishedCount(response.data.count || 0);
-      })
-      .catch((error) => {
-        console.error('Error fetching published posts:', error);
-      });
+      } else {
+        console.error('Failed to fetch published posts:', response.data);
+      }
 
-    // Fetch draft posts
-    axios
-      .get(`${import.meta.env.VITE_API_URL}/api/posts?type=draft&pagno=${draftPage}`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-      })
-      .then((response) => {
+      response = await axios.get(
+        `${import.meta.env.VITE_API_URL}/api/posts?type=draft&pagno=${draftPage}`, 
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+        }
+      );
+
+      if (response.data && response.data.results) {
         setDraftPosts(response.data.results || []);
         setDraftCount(response.data.count || 0);
-      })
-      .catch((error) => {
-        console.error('Error fetching draft posts:', error);
-      })
-      .finally(() => setLoading(false));
-  }
+      } else {
+        console.error('Failed to fetch draft posts:', response.data);
+      }
 
-  useEffect(() => {
+    } catch (error) {
+      console.error('Error fetching posts:', error.response ? error.response.data : error.message);
+    } finally {
+      setLoading(false);
+      console.log('API requests completed.');
+    }
+  };
+
+  useEffect( () => {
     setLoading(true);
     refreshPostList();
     // Fetch published posts
@@ -101,16 +110,17 @@ function AdminPage() {
         console.error('No authentication token found. Please log in.');
         return;
       }
-
+      setDeletingId(Number(postId));
       axios.delete(`${import.meta.env.VITE_API_URL}/api/posts/${postId}/`, {
         headers: { 'Authorization': `Bearer ${token}` },
       })
-        .then(() => {
-          // Trigger a refresh of the data
-          //setRefreshData(prev => !prev); // Toggle to trigger useEffect
-          refreshPostList();
+        .then(async () => {
+          await refreshPostList(postId);
         })
-        .catch(error => console.error('Error deleting post:', error));
+        .catch(error => console.error('Error deleting post:', error))
+        .finally( ()=> {
+          setDeletingId(0);
+        })
     };
 
 
@@ -141,6 +151,7 @@ function AdminPage() {
             loading={loading} 
             onEdit={(id) => navigate(`/blog/${id}/edit`)} 
             onDelete={handleDelete} 
+            deletingId={deletingId} // Pass the deleting state
             onPreview={(id) => navigate(`/blog/${id}`)} 
           />
           <Pagination
@@ -158,6 +169,7 @@ function AdminPage() {
             loading={loading} 
             onEdit={(id) => navigate(`/blog/${id}/edit`)} 
             onDelete={handleDelete} 
+            deletingId={deletingId}
             onPreview={(id) => navigate(`/blog/${id}`)} 
           />
           <Pagination

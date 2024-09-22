@@ -2,8 +2,9 @@ import React from 'react';
 import { Grid, Box, Button, Tooltip, Typography, Skeleton } from '@mui/material';
 import { Preview as PreviewIcon, Edit as EditIcon, Delete as DeleteIcon } from '@mui/icons-material';
 import axios from 'axios';
+import { CircularProgress } from '@mui/material';
 
-const PostList = React.memo(({ posts, loading, onEdit, onDelete, onPreview }) => {
+const PostList = React.memo(({ posts, loading, onEdit, onDelete, deletingId, onPreview }) => {
   if (loading) {
     return (
       <Grid container spacing={2}>
@@ -18,6 +19,7 @@ const PostList = React.memo(({ posts, loading, onEdit, onDelete, onPreview }) =>
 
   return (
     <Grid container spacing={2}>
+      
       {posts.map((post) => (
         <Grid item xs={12} key={post.id} className="post-item">
           <Box
@@ -46,11 +48,25 @@ const PostList = React.memo(({ posts, loading, onEdit, onDelete, onPreview }) =>
                   <EditIcon />
                 </Button>
               </Tooltip>
-              <Tooltip title="Delete" arrow>
-                <Button variant="text" color="secondary" onClick={() => onDelete(post.id)} sx={{ marginLeft: '10px', minWidth: 'auto', padding: 0 }} aria-label="Delete post">
-                  <DeleteIcon />
-                </Button>
-              </Tooltip>
+              { deletingId == Number(post.id) ? (
+                <CircularProgress size={24} sx={{ marginLeft: '10px' }} color="error" />
+                ) : (
+                  <Tooltip title="Delete" arrow>
+                    <Button
+                      variant="text"
+                      color="secondary"
+                      onClick={() => onDelete(post.id)}
+                      sx={{
+                        marginLeft: '10px',
+                        minWidth: 'auto',
+                        padding: 0,
+                      }}
+                      aria-label="Delete post"
+                    >
+                      <DeleteIcon />
+                    </Button>
+                  </Tooltip>
+                )}
             </div>
           </Box>
         </Grid>
