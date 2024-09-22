@@ -124,7 +124,7 @@ function PostCreatePage() {
   };
 
   return (
-    <Box className='edit post-content' sx={{ padding: '20px' }}>
+    <Box className='edit post-content' >
       <RichTextEditor onUpdate={setContent} content={content} />
       
       <Box sx={{ marginTop: '20px', display: 'flex', gap: '10px' }}>

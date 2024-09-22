@@ -127,7 +127,7 @@ function BlogEditPage() {
   };
 
   return (
-    <Box className='edit post-content' sx={{ padding: '20px' }}>
+    <Box className='edit post-content' >
       {isLoading ? (
         <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
           <CircularProgress />
