@@ -53,11 +53,10 @@ function BlogEditPage() {
     }
 
     const { title, finalContent } = extractTitleAndCleanContent(content);
-    setLoadingSave(true);
-
+    setLoadingSave(true); 
     axios.put(
       `${import.meta.env.VITE_API_URL}/api/posts/${postId}/`,
-      { content: finalContent, title },
+      { content: finalContent, title , is_published: true},
       { headers: { 'Authorization': `Bearer ${token}` } }
     )
       .then(response => {
@@ -82,8 +81,8 @@ function BlogEditPage() {
     }
 
     const { title, finalContent } = extractTitleAndCleanContent(content);
+    console.log(finalContent)
     setLoadingRevert(true);
-
     axios.put(
       `${import.meta.env.VITE_API_URL}/api/posts/${postId}/`,
       { content: finalContent, is_published: false, title },

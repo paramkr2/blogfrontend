@@ -22,7 +22,8 @@ import {BubbleMenuBar} from './BubbleMenuBar';
 import FloatingMenuBar from './FloatingMenuBar';
 import './editor.css';
 
-import { Node } from '@tiptap/core';
+import YouTubeEmbed from './YoutubeEmbed.jsx'
+
 
 
 const lowlight = createLowlight(all)
@@ -31,51 +32,6 @@ lowlight.register('js', js)
 const CustomDocument = Document.extend({
   content: 'heading block*',
 })
-
-const YouTubeEmbed = Node.create({
-  name: 'youtubeEmbed',
-  group: 'block',
-  atom: true,
-  addAttributes() {
-    return {
-      src: {
-        default: null,
-      },
-      width: {
-        default: 560,
-      },
-      height: {
-        default: 315,
-      },
-    };
-  },
-
-  parseHTML() {
-    return [
-      {
-        tag: 'iframe[src*="youtube.com"]',
-      },
-    ];
-  },
-
-  renderHTML({ HTMLAttributes }) {
-    return ['iframe', HTMLAttributes];
-  },
-
-  addCommands() {
-    return {
-      setYouTubeVideo:
-        (options) =>
-        ({ commands }) => {
-          return commands.insertContent({
-            type: this.name,
-            attrs: options,
-          });
-        },
-    };
-  },
-});
-
 
 export default function Editor({ content, onUpdate }) {
   const [isUploading, setIsUploading] = useState(false);

@@ -51,7 +51,7 @@ const BlogPostDetail = () => {
   }
 
   return (
-    <div className="post-detail">
+    <div className="post-detail editor-box">
       <h1 className="post-content post-heading">{post.title}</h1>
       <div
         className="post-content"

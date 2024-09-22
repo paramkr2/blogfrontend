@@ -1,7 +1,5 @@
 
 
-
-
 .editor-content {
   outline: none;
   border: none;
@@ -95,4 +93,13 @@
     }
   }
 }
+
+/* Center align the YouTube embed */
+
+/*  */
+ .youtube-embed-wrapper {
+  text-align: center;
+  margin-bottom: 16px;
+}
+
 
