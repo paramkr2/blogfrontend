@@ -129,7 +129,7 @@ export default function FloatingMenuBar({
 
 	    const token = localStorage.getItem('token');
 	    const response = await axios.post(
-	        `${import.meta.env.VITE_API_URL}/api/images/`,
+	        `${import.meta.env.VITE_API_URL}/api/imgur/`,
 	        formData,
 	        {
 	            headers: {
