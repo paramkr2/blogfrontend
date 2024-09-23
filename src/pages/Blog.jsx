@@ -24,6 +24,7 @@ const Blog = () => {
       setPosts(response.data.results);
       setTotalPages(Math.ceil(response.data.count / 5));
       setLoading(false); // Set loading to false once data is fetched
+      console.log('posts published in blog mange page', response.data)
     } catch (err) {
       setPosts(hardcodedPosts());
       setLoading(false);

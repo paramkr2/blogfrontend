@@ -39,7 +39,7 @@ function AdminPage() {
   const refreshPostList = async () => {
     try {
       let response = await axios.get(
-        `${import.meta.env.VITE_API_URL}/api/posts?type=published&pagno=${publishedPage}`, 
+        `${import.meta.env.VITE_API_URL}/api/posts?type=published&pageno=${publishedPage}`, 
         {headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },}
       );
 
@@ -51,7 +51,7 @@ function AdminPage() {
       }
 
       response = await axios.get(
-        `${import.meta.env.VITE_API_URL}/api/posts?type=draft&pagno=${draftPage}`, 
+        `${import.meta.env.VITE_API_URL}/api/posts?type=draft&pageno=${draftPage}`, 
         {
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
         }
@@ -72,7 +72,7 @@ function AdminPage() {
     }
   };
 
-  useEffect( () => {
+  useEffect(() => {
     setLoading(true);
     refreshPostList();
     // Fetch published posts
