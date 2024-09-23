@@ -9,4 +9,13 @@ body, html {
   padding-top: 80px; /* Adjust depending on your navbar height */
 }
 
+a {
+  color: #333; /* Slightly off-black */
+  text-decoration: underline;
+}
+
+a:hover {
+  color: #000; /* Change to pure black on hover */
+  text-decoration: underline;
+}
 
