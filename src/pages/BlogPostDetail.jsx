@@ -32,7 +32,7 @@ const BlogPostDetail = () => {
     const top = (window.innerHeight / 2) - (height / 2);
     window.open(url, 'Share', `width=${width},height=${height},top=${top},left=${left}`);
   };
-  
+
   if (error) {
     return <div>{error}</div>;
   }
@@ -61,7 +61,7 @@ const BlogPostDetail = () => {
   return (
     <div className="post-detail editor-box post-content">
       <h1 className=" post-heading">{post.title}</h1>
-      <p  style={{ marginTop: '-30px', fontSize: '1em', color: 'slategrey' }}>
+      <p  style={{ marginTop: '-30px', fontSize: '1em', color: 'slategrey'  }}>
         {formatISODate(post.created_at)}
       </p>
 
@@ -73,6 +73,7 @@ const BlogPostDetail = () => {
         display: 'flex', 
         justifyContent: 'right' ,
         maxWidth:'100%',
+        marginBottom:'1em',
       }}>
         <IconButton sx={{ color: 'grey' }} onClick={() => openPopup(`https://twitter.com/share?url=${window.location.href}`, '_blank')}>
           <Twitter />
