@@ -12,6 +12,7 @@ import {
   ListItem,
   ListItemText,
   Button,
+  ButtonBase,
   Box,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -76,9 +77,14 @@ export default function Navbar() {
       elevation={0}
     >
       <Toolbar>
-        <Typography variant="h6" sx={{ flexGrow: 1 }}>
-          GullCapital
-        </Typography>
+        <Box sx={{ flexGrow: 1 }}>
+          {/* Wrapping Typography with ButtonBase to make it clickable */}
+          <ButtonBase onClick={() => navigate('/')}>
+            <Typography variant="h6" sx={{ cursor: 'pointer' }}>
+              GullCapital
+            </Typography>
+          </ButtonBase>
+        </Box>
         <IconButton
           edge="end"
           color="inherit"

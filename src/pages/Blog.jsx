@@ -5,6 +5,8 @@ import { Grid, Card, CardContent, CardMedia, Typography, Pagination, Skeleton } 
 import tradingImage  from './trading_default.jpg';
 import './styles/Blog.css';
 
+import {formatISODate} from '../utils/formatISODate.js';
+
 const Blog = () => {
   const [posts, setPosts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -85,6 +87,8 @@ const Blog = () => {
                     }}
                   >
                     <Typography variant="h5" sx={{ fontWeight: 'bold', color: 'black' }}>{post.title}</Typography>
+
+                    <Typography variant="caption" sx={{  color: 'black' }}>{formatISODate(post.created_at)}</Typography>
 
                     {/* Wrapping HTML content in a div */}
                     <div
