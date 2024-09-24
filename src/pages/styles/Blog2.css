@@ -1,0 +1,152 @@
+
+.blog2-columns{
+	display:flex;
+	margin-top:150px;
+	padding: 0 30px ; 
+	justify-content: space-between;
+	font-family: sohne, "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+
+
+.blog2-list{
+	border-radius:10px;
+	display:block;
+	flex-basis: 70%;
+	width:100%;
+}
+
+.post-wrapper{
+	border-bottom: 2px solid black;
+	height:200px;
+	padding: 10px;
+	margin: 0 24px;
+
+}
+
+.post-main{
+	display:flex;
+	flex-direction:column; ;
+	padding-bottom:10px;
+	
+	
+	width:100%;
+	overflow:hidden;
+
+
+}
+
+.post-text{
+	display:flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+
+.post-text .body{
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;   /* Limit text to 3 lines */
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.post-title-body{
+	flex-basis: 70%;
+}
+.post-image{
+	flex-basis:30%;
+	padding:5px;
+	overflow:hidden;
+	text-align: right
+
+}
+.post-image img{
+	object-fit: cover;
+	height: 150px;
+	width: 200px
+}
+
+.blog2-list .title{
+	font-weight: 800; 
+	font-size:20px;
+	font-size:1.5em;
+	line-height: 1;
+	padding-bottom:0.5em;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+   -webkit-line-clamp: 2;
+   	overflow: hidden;
+	text-overflow: ellipsis;
+
+}
+
+.blog2-list .body{
+	font-size:16px;
+	line-height: 1.4;
+	
+}
+
+
+
+.date{
+	
+}
+
+.post-footer{
+	padding-top:10px;
+	display:flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+.post-footer button{
+	background: none;
+	border:none;
+	color: rgba(0, 0, 0, 0.4);
+}
+.post-footer button:hover{
+	background: none;
+	border:none;
+	color: inherit;
+}
+
+.blog2-side-list{
+  flex-basis: 30%; 
+}
+
+
+.blog2-columns a{
+	text-decoration: none;
+	color:inherit;
+
+}
+
+.blog2-columns a:hover {
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.post-image-inner{
+	align-items: right;
+}
+
+@media (max-width:768px){
+	.blog2-side-list{
+		display:none;
+	}
+
+	.blog2-list{
+		flex-basis:100%;
+	}
+
+	.blog2-columns{
+		padding:0 5px;
+	}
+
+	.post-image img{
+	object-fit: cover;
+	height: 120px;
+	width: 120px
+}
+}
