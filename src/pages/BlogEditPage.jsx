@@ -3,7 +3,7 @@ import RichTextEditor from '../components/RichTextEditor.jsx';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import './styles/PostEditPage.css';
-import { Button, Box, CircularProgress, Snackbar, Alert } from '@mui/material';
+import { Button, Box, CircularProgress, Snackbar, Alert, IconButton, Tooltip } from '@mui/material';
 import { Save as SaveIcon, Delete as DeleteIcon, Preview as PreviewIcon } from '@mui/icons-material';
 import { parse } from 'node-html-parser';
 
@@ -135,42 +135,95 @@ function BlogEditPage() {
       ) : (
         <>
           <RichTextEditor onUpdate={setContent} content={content}  />
-          <Box sx={{ marginTop: '20px', display: 'flex', gap: '10px' }}>
+          <Box
+            sx={{
+              marginTop: '20px',
+              display: 'flex',
+              flexDirection: { xs: 'column', sm: 'row' },
+              gap: '10px',
+              flexWrap: 'wrap',
+            }}
+          >
+            {/* Save and Revert buttons */}
             <Button
-              variant="contained"
-              color="success"
               onClick={handleSave}
               startIcon={loadingSave ? <CircularProgress size={20} /> : <SaveIcon />}
               disabled={loadingSave}
+              sx={{
+                width: { xs: '100%', sm: 'auto' },
+                backgroundColor: 'transparent',
+                color: 'inherit',
+                '&:hover': {
+                  backgroundColor: 'transparent',
+                  color: 'green', // Change to your preferred hover color
+                  backgroundColor: '#E3FCE3',
+                },
+              }}
             >
-              {loadingSave ? 'Saving...' : 'Save Post'}
+              {loadingSave ? 'Saving...' : 'Save and Publish '}
             </Button>
-            <Button
-              variant="contained"
-              color="warning"
+
+            
+
+            {/* Icon buttons with tooltips */}
+            <Box
+              sx={{
+                display: 'flex',
+                gap: '10px',
+                justifyContent: { sm: 'flex-start' },
+                flexDirection: { xs: 'row', sm: 'row' },
+              }}
+            >
+              <Button
               onClick={handleRevertToDraft}
               startIcon={loadingRevert ? <CircularProgress size={20} /> : <SaveIcon />}
               disabled={loadingRevert}
+              sx={{
+                width: { xs: '100%', sm: 'auto' },
+                backgroundColor: 'transparent',
+                color: 'inherit',
+                '&:hover': {
+                  color: 'orange', // Change to your preferred hover color
+                  backgroundColor: '#FFFAE1',
+                },
+              }}
             >
               {loadingRevert ? 'Saving as Draft...' : isPublished ? 'Revert to Draft' : 'Save as Draft'}
             </Button>
-            <Button
-              variant="outlined"
-              color="info"
-              onClick={handlePreview}
-              startIcon={<PreviewIcon />}
-            >
-              Preview Post
-            </Button>
-            <Button
-              variant="outlined"
-              color="error"
-              onClick={handleDelete}
-              startIcon={<DeleteIcon />}
-            >
-              Delete Post
-            </Button>
+              <Tooltip title="Preview Post">
+                <IconButton
+                  color="info"
+                  onClick={handlePreview}
+                  sx={{
+                    backgroundColor: 'transparent',
+                    color: 'inherit',
+                    '&:hover': {
+                      color: 'blue', // Change to your preferred hover color
+                    },
+                  }}
+                >
+                  <PreviewIcon />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Delete Post">
+                <IconButton
+                  color="error"
+                  onClick={handleDelete}
+                  sx={{
+                    backgroundColor: 'transparent',
+                    color: 'inherit',
+                    '&:hover': {
+                      color: 'red', // Change to your preferred hover color
+
+                    },
+                  }}
+                >
+                  <DeleteIcon />
+                </IconButton>
+              </Tooltip>
+            </Box>
           </Box>
+
           <Snackbar
             open={notification.open}
             autoHideDuration={3000}

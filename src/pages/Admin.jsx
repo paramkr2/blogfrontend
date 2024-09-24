@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 import { useAuth } from '../context/AuthContext';
-import { Save as SaveIcon, Delete as DeleteIcon, Preview as PreviewIcon , Edit as EditIcon } from '@mui/icons-material';
+import { Save as SaveIcon, Delete as DeleteIcon, Preview as PreviewIcon , Edit as EditIcon , Logout as LogoutIcon } from '@mui/icons-material';
 import PostList from '../components/PostList.jsx'; 
 
 function AdminPage() {
@@ -129,12 +129,39 @@ function AdminPage() {
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
         <h2>Admin Dashboard</h2>
         <div>
-          <Button variant="contained" color="success" onClick={handleCreateNew} sx={{ marginRight: '10px' }}>
-            Create New Post
+          <Button
+              onClick={handleCreateNew}
+              startIcon={<EditIcon />}
+              sx={{
+                width: { xs: '100%', sm: 'auto' },
+                backgroundColor: 'transparent',
+                color: 'green',
+                '&:hover': {
+                  color: 'black', // Change to your preferred hover color
+                  backgroundColor: 'transparent',
+                },
+              }}
+            >
+           Create New 
           </Button>
-          <Button variant="outlined" color="error" onClick={handleLogout}>
-            Logout
+          <Button
+              onClick={handleLogout}
+              startIcon={<LogoutIcon/>}
+              sx={{
+                width: { xs: '100%', sm: 'auto' },
+                backgroundColor: 'transparent',
+                color: 'red',
+                '&:hover': {
+                  color: 'black', // Change to your preferred hover color
+                  backgroundColor: 'transparent',
+                },
+              }}
+            >
+           logout
           </Button>
+          
+
+          
         </div>
       </Box>
 

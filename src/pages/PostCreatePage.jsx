@@ -3,8 +3,8 @@ import RichTextEditor from '../components/RichTextEditor.jsx';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './styles/PostEditPage.css';
-import { Button, Box, CircularProgress, Snackbar, Alert } from '@mui/material';
-import { Save as SaveIcon, Preview as PreviewIcon } from '@mui/icons-material';
+import { Button, Box, CircularProgress, Snackbar, Alert , IconButton ,Tooltip } from '@mui/material';
+import { Save as SaveIcon, Preview as PreviewIcon , Delete as DeleteIcon} from '@mui/icons-material';
 import { parse } from 'node-html-parser';
 
 function PostCreatePage() {
@@ -126,36 +126,77 @@ function PostCreatePage() {
   return (
     <Box className='edit post-content' >
       <RichTextEditor onUpdate={setContent} content={content} />
-      
-      <Box sx={{ marginTop: '20px', display: 'flex', gap: '10px' }}>
-        <Button
-          variant="contained"
-          color="success"
-          onClick={handleSavePublish}
-          startIcon={loadingPublish ? <CircularProgress size={20} /> : <SaveIcon />}
-          disabled={loadingPublish}  // Disable the button while loading
-        >
-          {loadingPublish ? 'Saving...' : 'Save and Publish Post'}
-        </Button>
 
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleSaveDraft}
-          startIcon={loadingDraft ? <CircularProgress size={20} /> : <SaveIcon />}
-          disabled={loadingDraft}  // Disable the button while loading
-        >
-          {loadingDraft ? 'Saving...' : 'Save as Draft'}
-        </Button>
-        <Button
-          variant="outlined"
-          color="info"
-          onClick={handlePreview}
-          startIcon={<PreviewIcon />}
-        >
-          Preview Post
-        </Button>
-      </Box>
+      <Box sx={{
+              marginTop: '20px',
+              display: 'flex',
+              flexDirection: { xs: 'column', sm: 'row' },
+              gap: '10px',
+              flexWrap: 'wrap',
+            }}
+          >
+          <Button
+              onClick={handleSavePublish}
+              startIcon={loadingPublish ? <CircularProgress size={20} /> : <SaveIcon />}
+              disabled={loadingPublish}  // Disable the button while loading
+              sx={{
+                width: { xs: '100%', sm: 'auto' },
+                backgroundColor: 'transparent',
+                color: 'inherit',
+                '&:hover': {
+                  backgroundColor: 'transparent',
+                  color: 'green', // Change to your preferred hover color
+                  backgroundColor: '#E3FCE3',
+                },
+              }}
+            >
+              {loadingPublish ? 'Saving...' : 'Save and Publish Post'}
+            </Button>
+
+            
+
+            {/* Icon buttons with tooltips */}
+            <Box
+              sx={{
+                display: 'flex',
+                gap: '10px',
+                justifyContent: { sm: 'flex-start' },
+                flexDirection: { xs: 'row', sm: 'row' },
+              }}
+            >
+              <Button
+                onClick={handleSaveDraft}
+                startIcon={loadingDraft ? <CircularProgress size={20} /> : <SaveIcon />}
+                disabled={loadingDraft}  // Disable the button while loading
+              sx={{
+                width: { xs: '70%', sm: 'auto' },
+                backgroundColor: 'transparent',
+                color: 'inherit',
+                '&:hover': {
+                  color: 'orange', // Change to your preferred hover color
+                  backgroundColor: '#FFFAE1',
+                },
+              }}
+            >
+              {loadingDraft ? 'Saving...' : 'Save as Draft'}
+            </Button>
+              <Tooltip title="Preview Post">
+                <IconButton
+                  color="info"
+                  onClick={handlePreview}
+                  sx={{
+                    backgroundColor: 'transparent',
+                    color: 'inherit',
+                    '&:hover': {
+                      color: 'blue', // Change to your preferred hover color
+                    },
+                  }}
+                >
+                  <PreviewIcon />
+                </IconButton>
+              </Tooltip>
+            </Box>
+          </Box>
 
       {/* Snackbar for notifications */}
       <Snackbar
