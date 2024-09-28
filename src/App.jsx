@@ -9,7 +9,7 @@ import Navbar from './components/Navbar.jsx';
 import Login from './pages/Login.jsx'
 import Blog from './pages/Blog.jsx'
 import BlogPostDetail from './pages/BlogPostDetail';
-import Admin from './pages/Admin.jsx'
+import Dashboard from './pages/Dashboard.jsx'
 import Blog2 from './pages/Blog2.jsx';
 
 function App() {
@@ -25,7 +25,7 @@ function App() {
           <Route path="/login" element={<Login/>} /> 
           <Route path="/blog" element={<Blog/>} /> 
           <Route path="/blog/:postId" element={<BlogPostDetail />} />
-          <Route path="/admin" element={<Admin/>} />
+          <Route path="/dashboard" element={<Dashboard/>} />
           <Route path="/blog2" element={<Blog2/>} /> 
         </Routes>
       </div>

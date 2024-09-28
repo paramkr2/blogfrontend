@@ -9,7 +9,7 @@ import { Save as SaveIcon, Delete as DeleteIcon, Preview as PreviewIcon , Edit a
 import PostList from '../components/PostList.jsx'; 
 import EditProfile from '../components/EditProfile.jsx';
 
-function AdminPage() {
+function DashboardPage() {
   const { isLoggedIn , setIsLoggedIn} = useAuth();
   const [tabValue, setTabValue] = useState(0);
   const [publishedPosts, setPublishedPosts] = useState([]);
@@ -251,4 +251,4 @@ function AdminPage() {
 );
 }
 
-export default AdminPage;
+export default DashboardPage;

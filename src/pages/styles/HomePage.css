@@ -13,6 +13,7 @@
 
 .section1 {
   background-color: #e3f2fd; /* Blue background */
+  text-align: left;
 }
 
 .section2 {
@@ -22,19 +23,23 @@
 
 .section3 {
   background-color: #e3f2fd; /* Red background */
+
 }
 
 .cta-button {
   margin-top: 20px;
 }
 
-
+.fade-in-text{
+  text-align: left;
+}
  
 
 .fade-in-text .word {
   opacity: 0;
   display: inline-block;
   animation: fadeIn 0.8s forwards;
+
 }
 
 .fade-in-text .word:nth-child(1) {

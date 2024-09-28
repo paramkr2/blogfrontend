@@ -76,10 +76,11 @@ const EditProfile = ({ open, handleClose, onProfileUpdate }) => {
           transform: 'translate(-50%, -50%)',
           width: 400,
           maxWidth:'70%',
-          bgcolor: 'rgba(255, 255, 255, 0.8)', // Translucent background
+          bgcolor: 'rgba(255, 255, 255, 0.6)', // Translucent background
           boxShadow: 24,
           p: 4,
           borderRadius: '10px',
+          backdropFilter: 'blur(10px)',
         }}
       >
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>

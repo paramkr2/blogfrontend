@@ -4,9 +4,15 @@ import { Container, Grid, Typography, Button, Card, CardContent, CardMedia } fro
 import './styles/HomePage.css';
 import tradingImage  from './trading_default.jpg';
 import services from './services.png';
+import strategy from './strategy.png';
+import { motion, useInView } from 'framer-motion';
+import { useRef } from 'react';
 
 export default function HomePage() {
   const [recentPosts, setRecentPosts] = useState([]);
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: '-100px' }); // Trigger once when it's about to be in view
+
 
   useEffect(() => {
     axios
@@ -24,30 +30,58 @@ export default function HomePage() {
   return (
     <div className="home">
       {/* First Section */}
-      <div className="section section1">
-        <Container maxWidth="lg">
-          <Grid container spacing={4} alignItems="center">
-            {/* Left column - Brief about the site */}
-            <Grid item xs={12} md={6} >
-              <Typography variant="h2" component="h1" gutterBottom className="fade-in-text">
-                <span className="word">Welcome</span> <span className="word">to</span> <span className="word">GullCapital</span> 
+      <div className="section section1" id="welcome-section" >
+      <Container maxWidth="lg">
+        <Grid container spacing={4} alignItems="center">
+          {/* Left column - Brief about the site */}
+          <Grid item xs={12} md={6}>
+            <motion.div
+              initial={{ opacity: 0.1, filter: 'blur(10px)' }}
+              animate={{ opacity: 1, filter: 'blur(0px)' }} 
+              transition={{ duration: 0.5, ease: 'easeOut', delay: 0.1 }}
+            >
+              <Typography variant="h3" component="h3" gutterBottom 
+                className="fade-in-text"
+                >
+                <span className="word">The industry’s</span> 
+                <span className="word">best tactical asset allocation</span> 
+                <span className="word">strategies, in one place.</span>
               </Typography>
               <Typography variant="h5" paragraph>
-                From indicators to algos, Unbiased Trading unlocks the benefits of coding in your trading, without needing to learn it. Access the best retail backtesting and algorithmic developers that are powering the biggest retail traders and achieve your trading goals, faster. 
+                  
+                <div>
+                  <h1>What we do</h1>
+                </div>
+                <div>
+                  <div>Build bots to trade crypto, stocks, and futures</div>
+                  <div>
+                    <motion.button
+                      onClick={(e) => {}}
+                      whileHover={{ scale: 1.1 }}
+                      style={{ padding: '10px 20px', cursor: 'pointer' }}
+                    >
+                      Learn more
+                    </motion.button>
+                  </div>
+                </div>
               </Typography>
-              
-            </Grid>
-            {/* Right column - Transparent image */}
-            <Grid item xs={12} md={6}>
-              <img
-                src="https://cdn.prod.website-files.com/65609fbba58b94d045220b6e/65782e339367bc55febf5551_Trade%2001-p-500.png" // Update with your image path
-                alt="Site overview"
-                style={{ width: '100%', maxWidth: '500px', objectFit: 'contain' }}
-              />
-            </Grid>
+            </motion.div>
           </Grid>
-        </Container>
-      </div>
+
+          {/* Right column - Transparent image */}
+          <Grid item xs={12} md={6}>
+            <motion.img
+              src="https://cdn.prod.website-files.com/65609fbba58b94d045220b6e/65782e339367bc55febf5551_Trade%2001-p-500.png"
+              alt="Site overview"
+              style={{ width: '100%', maxWidth: '500px', objectFit: 'contain' }}
+              initial={{ opacity: 0.1, filter: 'blur(10px)' }}
+              animate={ { opacity: 1, filter: 'blur(0px)' }}
+              transition={{ duration: 0.5, ease: 'easeOut', delay: 0.1 }} // Adjusted delay for the image
+            />
+          </Grid>
+        </Grid>
+      </Container>
+    </div>
 
       {/* Second Section - Recent Posts */}
       <div className="section section2">
@@ -112,37 +146,53 @@ export default function HomePage() {
       </div>
 
 
-      <div className="section section3" id="servies">
+       <div className="section section3" id="aboutus" ref={ref}>
         <Container maxWidth="lg">
           <Grid container spacing={4} alignItems="center">
             {/* Left column - Brief about the site */}
-            <Grid item xs={12} md={6} >
-              <Typography variant="h3" component="h3" gutterBottom className="fade-in-text">
-                <span className="word">Let us</span> <span className="word">handle the coding,</span> 
-              </Typography>
-              <Typography variant="h5" paragraph>
-               
-                Save yourself years of pain!
-
-                Learning to code is a full-time commitment, demanding time, effort, and consistency, but It's essential for transforming your trading with custom backtests, indicators, and algorithms.
-
-                That's why I created Unbiased Trading, to give you access to things that only hedge funds and eight-figure traders, who can hire a team of quants and coders, have.
-
-                All at a fraction of the cost.
-              </Typography>
-              
-            </Grid>
-            {/* Right column - Transparent image */}
             <Grid item xs={12} md={6}>
-              <img
-                src={services}  // Update with your image path
-                alt="Site overview"
-                style={{ width: '100%', maxWidth: '500px', objectFit: 'contain' }}
-              />
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.5, delay: 0.2 }} // Delay for all text
+              >
+                <Typography variant="h3" component="h3" gutterBottom className="fade-in-text">
+                  <span className="word">About</span> <span className="word">us</span> 
+                </Typography>
+                <Typography variant="h5" paragraph sx={{ fontSize: '0.9rem' }}>
+                  <p>
+                    Cryptogull builds bots to trade crypto, stocks, and futures. We utilize tech, data, and economic intuition to find trends and automate profits.
+                  </p>
+                  <h2 style={{ textAlign: 'left' }}>Team</h2>
+                  <ul style={{ listStyleType: 'none', paddingLeft: 0 }}>
+                    <li style={{ fontSize: '0.8rem' }}>
+                      <span >Gull</span> — Trader and Quant.
+                    </li>
+                    <li style={{ fontSize: '0.8rem' }}>
+                      <span >Narender</span> — Algorithmic Trading Software Developer
+                    </li>
+                    <li style={{ fontSize: '0.8rem' }}>
+                      <span >Vivek</span> — Full Stack Developer
+                    </li>
+                  </ul>
+                </Typography>
+              </motion.div>
             </Grid>
+
+          {/* Right column - Transparent image */}
+          <Grid item xs={12} md={6}>
+            <motion.img
+              src={services}  // Update with your image path
+              alt="Site overview"
+              style={{ width: '100%', maxWidth: '500px', objectFit: 'contain' }}
+              initial={{ opacity: 0 }}
+              animate={isInView ? { opacity: 1 } : {}}
+              transition={{ duration: 0.5, delay: 0.5 }} // Delay for image
+            />
           </Grid>
-        </Container>
-      </div>
+        </Grid>
+      </Container>
+    </div>
 
       <div className="section section4" id="contact">
         <Container maxWidth="lg">
@@ -153,7 +203,14 @@ export default function HomePage() {
                 <span className="word">Contact</span> <span className="word">Us</span> 
               </Typography>
               <Typography variant="h5" paragraph>
-                Book our servies and ontat us 
+                
+                  <p>
+                    We'd love to hear from you. Please use the form below to email us, and we will respond within 24 hours.
+                  </p>
+                <p>
+                Email: <a href="mailto:gull@cryptogull.io">gull@cryptogull.io</a><br />
+                Twitter: <a href="https://twitter.com/cryptogull_io">@cryptogull_io</a>
+              </p>
               </Typography>
               
             </Grid>

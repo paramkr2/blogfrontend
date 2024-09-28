@@ -16,6 +16,8 @@ import {
   Box,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
+import logo from './logo.png';
+import cryptogullLogo from './cryptogullLogo.png'
 
 export default function Navbar() {
   const { isLoggedIn, setIsLoggedIn } = useAuth();
@@ -67,12 +69,13 @@ export default function Navbar() {
         position: 'fixed',
         top: 0,
         width: '100%',
-        padding: '20px',
-        background: 'rgba(255, 255, 255, 0.8)',
+        padding: '10px',
+        background: 'rgba(255, 255, 255, 0.7)',
         backdropFilter: 'blur(10px)',
         boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
         zIndex: 1000,
         color:'black',
+
       }}
       elevation={0}
     >
@@ -80,9 +83,17 @@ export default function Navbar() {
         <Box sx={{ flexGrow: 1 }}>
           {/* Wrapping Typography with ButtonBase to make it clickable */}
           <ButtonBase onClick={() => navigate('/')}>
-            <Typography variant="h6" sx={{ cursor: 'pointer' }}>
-              GullCapital
-            </Typography>
+            <Box  sx={{ cursor: 'pointer' , height:'50px'}}>
+              <img 
+                src={cryptogullLogo} 
+                alt='this' 
+                style={{ 
+                  width: '100%', 
+                  height: '100%', 
+                  objectFit: 'cover' 
+                }} 
+              />
+            </Box>
           </ButtonBase>
         </Box>
         <IconButton
@@ -97,9 +108,9 @@ export default function Navbar() {
         <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
           <Button color="inherit" onClick={() => handleMenuItemClick('/')}>Home</Button>
           <Button color="inherit" onClick={() => handleMenuItemClick('/Blog')}>Blog</Button>
-          <Button color="inherit" onClick={() => scrollToSection('servies')}>Servies</Button>
+          <Button color="inherit" onClick={() => scrollToSection('aboutus')}>About</Button>
           <Button color="inherit" onClick={() => scrollToSection('contact')}>Contact</Button>
-          {isLoggedIn && <Button color="inherit" onClick={() => handleMenuItemClick('/admin')}>Admin</Button>}
+          {isLoggedIn && <Button color="inherit" onClick={() => handleMenuItemClick('/dashboard')}>Dashboard</Button>}
           {!isLoggedIn && <Button color="inherit" onClick={() => handleMenuItemClick('/login')}>Login</Button>}
         </Box>
       </Toolbar>
@@ -116,15 +127,15 @@ export default function Navbar() {
           <ListItem button onClick={() => handleMenuItemClick('/Blog')}>
             <ListItemText primary="Blog" />
           </ListItem>
-          <ListItem button onClick={() => { scrollToSection('servies'); }}>
-            <ListItemText primary="Servies" />
+          <ListItem button onClick={() => { scrollToSection('aboutus'); }}>
+            <ListItemText primary="AboutUs" />
           </ListItem>
           <ListItem button onClick={() => { scrollToSection('contact'); }}>
             <ListItemText primary="Contact" />
           </ListItem>
           {isLoggedIn && (
-            <ListItem button onClick={() => handleMenuItemClick('/admin')}>
-              <ListItemText primary="Admin" />
+            <ListItem button onClick={() => handleMenuItemClick('/dashboard')}>
+              <ListItemText primary="Dashboard" />
             </ListItem>
           )}
           {!isLoggedIn && (

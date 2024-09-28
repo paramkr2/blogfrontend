@@ -68,9 +68,10 @@ const BlogPostDetail = () => {
     return (
       <div className="post-detail">
         <div className="post-content">
-          <Skeleton variant="text" height={40} width="100%" sx={{ marginBottom: 2 }} />
+          <Skeleton variant="text" height={30} width="100%" sx={{ marginBottom: 2 }} />
+          <Skeleton variant="text" height={30} width="80%" sx={{ marginBottom: 2 }} />
           <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <Skeleton variant="rectangular" height="60vh" width="90%" animation="wave" sx={{ marginBottom: 2 }} />
+            <Skeleton variant="rectangular" height="50vh" width="90%" animation="wave" sx={{ marginBottom: 2 }} />
           </div>
           <Skeleton variant="text" height={20} width="100%" animation="wave" />
           <Skeleton variant="text" height={20} width="90%" animation="wave" />
@@ -101,14 +102,23 @@ const BlogPostDetail = () => {
         maxWidth: '100%',
         marginBottom: '1em',
       }}>
-        {!userDetails ? ( <Skeleton variant="circular" width={50} height={50} /> ): (
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+         
+        <Box sx={{ display: 'flex', alignItems: 'flex-end' }}> 
+          {!userDetails ? (
+            <Skeleton variant="circular" width={50} height={50} />
+          ):(
             <Avatar src={userDetails.image_url} alt={post.user_full_name} sx={{ width: 50, height: 50, marginRight: 1 }} />
-            <a href={`/blog?username=${userDetails.id}`} style={{ textDecoration: 'none', color: 'black' }}>
-              <span style={{ fontWeight: 'bold' }}>{userDetails.fullname}</span>
-            </a>
-          </Box>
-        )}
+          )}
+
+          {!userDetails ? (
+            <Skeleton variant="text" width={100} height={20} />
+          ):(
+            <div style={{ textDecoration: 'none', color: 'black' }}> 
+              <span style={{ fontWeight: 'bold' }}>{userDetails.fullname.charAt(0).toUpperCase() + userDetails.fullname.slice(1)}</span>
+            </div>
+          )}
+        </Box>
+        
         <Box>
           <IconButton onClick={handleShareClick} sx={{ color: 'grey' }}>
             <Share />
