@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { Grid, Card, CardContent, CardMedia, Typography, Pagination, Skeleton } from '@mui/material';
+import {Box, Grid, Card, CardContent, CardMedia, Typography, Pagination, Skeleton,Avatar } from '@mui/material';
 import tradingImage  from './trading_default.jpg';
 import './styles/Blog.css';
 
@@ -82,10 +82,48 @@ const Blog = () => {
                       height: '200px', // Match height to CardMedia
                     }}
                   >
-                    <Typography variant="h5" sx={{ fontWeight: 'bold', color: 'black' }}>{post.title}</Typography>
+                    <Typography variant="h6" 
+                       sx={{
+                          fontWeight: 'bold', 
+                          color: 'black' ,
+                          display: '-webkit-box',
+                          WebkitBoxOrient: 'vertical',
+                          WebkitLineClamp: 2,
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          whiteSpace: 'normal',
+                          paddingBottom:'0.8em',
+                          lineHeight:1,
+                        }}
+                      >
+                      {post.title}
+                     </Typography>
 
-                    <Typography variant="caption" sx={{  color: 'black' }}>{formatISODate(post.created_at)}</Typography>
+                    {/* Author image, fullname, and date row */}
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between', // Push date to the right
+                        paddingBottom: '0.5em',
+                        paddingTop: '0.5em'
+                      }}
+                    >
+                      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                        <Avatar
+                          src={post.author_image_url}
+                          alt={post.author_fullname}
+                          sx={{ width: 24, height: 24, marginRight: '8px' }}
+                        />
+                        <Typography variant="body2" sx={{ color: 'black', fontWeight: 'bold' }}>
+                          {post.author_fullname}
+                        </Typography>
+                      </Box>
 
+                      <Typography variant="caption" sx={{ color: 'black' }}>
+                        {formatISODate(post.created_at)}
+                      </Typography>
+                    </Box>
                     {/* Wrapping HTML content in a div */}
                     <div
                       style={{
