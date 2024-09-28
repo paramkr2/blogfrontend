@@ -1,22 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import { Skeleton } from '@mui/material';
+import { Skeleton, IconButton, Box, Avatar, Menu, MenuItem } from '@mui/material';
 import { formatISODate } from '../utils/formatISODate.js';
-import { Twitter, Instagram, Facebook } from '@mui/icons-material';
-import { IconButton, Box } from '@mui/material';
+import { Twitter, Instagram, Facebook, Share } from '@mui/icons-material';
 
 const BlogPostDetail = () => {
   const { postId } = useParams();
   const [post, setPost] = useState(null);
   const [error, setError] = useState('');
+  const [anchorEl, setAnchorEl] = useState(null); // State for the share dropdown
+  const [userDetails, setUserDetails] = useState(null);
 
   useEffect(() => {
     const fetchPostDetails = async () => {
       try {
         const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/posts/${postId}/`);
-        console.log(response.data);
         setPost(response.data);
+        console.log(response.data)
       } catch (err) {
         setError('Failed to load post.');
       }
@@ -25,19 +26,43 @@ const BlogPostDetail = () => {
     fetchPostDetails();
   }, [postId]);
 
+
+  useEffect( ()=>{
+    if(post){
+      const fetchUserDetails = async () => {
+        try {
+          const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/profile/${post.author}/`);
+          setUserDetails(response.data);
+          console.log(response.data)
+        } catch (err) {
+          setError('Failed to load post.');
+        }
+      };
+
+      fetchUserDetails();
+    }
+  },[post])
+
+  const handleShareClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleCloseShareMenu = () => {
+    setAnchorEl(null);
+  };
+
   const openPopup = (url) => {
     const width = 600;
     const height = 400;
     const left = (window.innerWidth / 2) - (width / 2);
     const top = (window.innerHeight / 2) - (height / 2);
     window.open(url, 'Share', `width=${width},height=${height},top=${top},left=${left}`);
+    handleCloseShareMenu(); // Close the menu after sharing
   };
 
   if (error) {
     return <div>{error}</div>;
   }
-
-
 
   if (!post) {
     return (
@@ -60,36 +85,56 @@ const BlogPostDetail = () => {
 
   return (
     <div className="post-detail editor-box post-content">
-      <h1 className=" post-heading">{post.title}</h1>
-      <p  style={{ marginTop: '-30px', fontSize: '1em', color: 'slategrey'  }}>
+      <h1 className="post-heading">{post.title}</h1>
+      <p style={{ marginTop: '-30px', fontSize: '1em', color: 'slategrey' }}>
         {formatISODate(post.created_at)}
       </p>
 
-      {/* Social media share icons */}
-      <Box sx={{ 
-        borderTop: '1px solid lightgrey', 
-        borderBottom: '1px solid lightgrey', 
-        padding: '5px 0', 
-        display: 'flex', 
-        justifyContent: 'right' ,
-        maxWidth:'100%',
-        marginBottom:'1em',
+      {/* User information and social media share icons */}
+      <Box sx={{
+        borderTop: '1px solid lightgrey',
+        borderBottom: '1px solid lightgrey',
+        padding: '5px 0',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        maxWidth: '100%',
+        marginBottom: '1em',
       }}>
-        <IconButton sx={{ color: 'grey' }} onClick={() => openPopup(`https://twitter.com/share?url=${window.location.href}`, '_blank')}>
-          <Twitter />
-        </IconButton>
-        <IconButton sx={{ color: 'grey' }} onClick={() => openPopup(`https://www.instagram.com/?url=${window.location.href}`, '_blank')}>
-          <Instagram />
-        </IconButton>
-        <IconButton sx={{ color: 'grey' }} onClick={() => openPopup(`https://www.facebook.com/sharer/sharer.php?u=${window.location.href}`, '_blank')}>
-          <Facebook />
-        </IconButton>
+        {!userDetails ? ( <Skeleton variant="circular" width={50} height={50} /> ): (
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Avatar src={userDetails.image_url} alt={post.user_full_name} sx={{ width: 50, height: 50, marginRight: 1 }} />
+            <a href={`/blog?username=${userDetails.id}`} style={{ textDecoration: 'none', color: 'black' }}>
+              <span style={{ fontWeight: 'bold' }}>{userDetails.fullname}</span>
+            </a>
+          </Box>
+        )}
+        <Box>
+          <IconButton onClick={handleShareClick} sx={{ color: 'grey' }}>
+            <Share />
+          </IconButton>
+          <Menu
+            anchorEl={anchorEl}
+            open={Boolean(anchorEl)}
+            onClose={handleCloseShareMenu}
+            sx={{ display: 'flex' }}
+          >
+            <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+              <MenuItem onClick={() => openPopup(`https://twitter.com/share?url=${window.location.href}`)} sx={{ minWidth: 0 }}>
+                <Twitter />
+              </MenuItem>
+              <MenuItem onClick={() => openPopup(`https://www.instagram.com/?url=${window.location.href}`)} sx={{ minWidth: 0 }}>
+                <Instagram />
+              </MenuItem>
+              <MenuItem onClick={() => openPopup(`https://www.facebook.com/sharer/sharer.php?u=${window.location.href}`)} sx={{ minWidth: 0 }}>
+                <Facebook />
+              </MenuItem>
+            </Box>
+          </Menu>
+        </Box>
       </Box>
 
-      <div
-        
-        dangerouslySetInnerHTML={{ __html: post.content }}  // Render HTML content safely
-      ></div>
+      <div dangerouslySetInnerHTML={{ __html: post.content }} /> {/* Render HTML content safely */}
     </div>
   );
 };

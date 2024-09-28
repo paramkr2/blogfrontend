@@ -4,8 +4,10 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 import { useAuth } from '../context/AuthContext';
-import { Save as SaveIcon, Delete as DeleteIcon, Preview as PreviewIcon , Edit as EditIcon , Logout as LogoutIcon } from '@mui/icons-material';
+import { Save as SaveIcon, Delete as DeleteIcon, Preview as PreviewIcon , Edit as EditIcon , Logout as LogoutIcon, AccountBox as AccountBoxIcon } from '@mui/icons-material';
+
 import PostList from '../components/PostList.jsx'; 
+import EditProfile from '../components/EditProfile.jsx';
 
 function AdminPage() {
   const { isLoggedIn , setIsLoggedIn} = useAuth();
@@ -18,7 +20,23 @@ function AdminPage() {
   const [publishedCount, setPublishedCount] = useState(0);
   const [draftCount, setDraftCount] = useState(0);
   const [deletingId, setDeletingId] = useState(0);
-  
+
+  // edit profile buttons
+  const [profileModalOpen, setProfileModalOpen] = useState(false);
+  const handleProfileModalOpen = () => {
+    setProfileModalOpen(true);
+  };
+
+  const handleProfileModalClose = () => {
+    setProfileModalOpen(false);
+  };
+
+  const handleProfileUpdate = () => {
+    // Optional: handle any action after the profile is updated
+    console.log('Profile updated');
+  };
+
+
   const navigate = useNavigate();
 
   const handleTabChange = (event, newValue) => {
@@ -129,6 +147,21 @@ function AdminPage() {
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
         <h2>Admin Dashboard</h2>
         <div>
+          <Button 
+            onClick={handleProfileModalOpen} 
+            startIcon={<AccountBoxIcon />}
+              sx={{
+                width: { xs: '100%', sm: 'auto' },
+                backgroundColor: 'transparent',
+                color: 'blue',
+                '&:hover': {
+                  color: 'black', // Change to your preferred hover color
+                  backgroundColor: 'transparent',
+                },
+              }}
+          >
+            Profile
+          </Button>
           <Button
               onClick={handleCreateNew}
               startIcon={<EditIcon />}
@@ -208,6 +241,12 @@ function AdminPage() {
         </>
       )}
     </Box>
+
+    <EditProfile
+        open={profileModalOpen}
+        handleClose={handleProfileModalClose}
+        onProfileUpdate={handleProfileUpdate}
+      />
   </Box>
 );
 }

@@ -14,14 +14,10 @@ const Blog = () => {
   const [loading, setLoading] = useState(true); // Track loading state
 
   const fetchBlogPosts = async (page = 1) => {
-    setLoading(true); // Set loading to true while fetching
-    const token = localStorage.getItem('token');
+    setLoading(true); 
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_API_URL}/api/posts/?type=published&pageno=${page}`,
-        {
-          headers: { 'Authorization': `Bearer ${token}` },
-        }
+        `${import.meta.env.VITE_API_URL}/api/posts/?type=published&pageno=${page}`
       );
       setPosts(response.data.results);
       setTotalPages(Math.ceil(response.data.count / 5));

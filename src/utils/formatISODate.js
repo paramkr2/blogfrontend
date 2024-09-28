@@ -25,7 +25,7 @@ export function formatISODate(isoDate) {
   };
 
   // Combine date and time into the desired format
-  return `${hours}:${minutes}${ampm} ${day}${getOrdinalSuffix(day)} ${month} ${year}`;
+  return `${day}${getOrdinalSuffix(day)} ${month} ${year}`;
 }
 
 export function getDayYear(isoDate) {

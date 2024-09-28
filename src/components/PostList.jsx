@@ -1,8 +1,6 @@
 import React from 'react';
-import { Grid, Box, Button, Tooltip, Typography, Skeleton } from '@mui/material';
+import { Grid, Box, Button, Tooltip, Typography, Skeleton, CircularProgress } from '@mui/material';
 import { Preview as PreviewIcon, Edit as EditIcon, Delete as DeleteIcon } from '@mui/icons-material';
-import axios from 'axios';
-import { CircularProgress } from '@mui/material';
 
 const PostList = React.memo(({ posts, loading, onEdit, onDelete, deletingId, onPreview }) => {
   if (loading) {
@@ -12,14 +10,13 @@ const PostList = React.memo(({ posts, loading, onEdit, onDelete, deletingId, onP
           <Grid item xs={12} key={index}>
             <Skeleton variant="rectangular" width="100%" height={80} />
           </Grid>
-        ))}
+        ))}  
       </Grid>
     );
   }
 
   return (
     <Grid container spacing={2}>
-      
       {posts.map((post) => (
         <Grid item xs={12} key={post.id} className="post-item">
           <Box

@@ -1,3 +1,5 @@
+
+
 import React , {useState,useEffect} from "react";
 
 import { LinearProgress, Box, Typography } from '@mui/material';
@@ -87,22 +89,22 @@ export default function Editor({ content, onUpdate }) {
   <div className="editor-box">
     {/* The bubble menu bar for formatting options */}
 
-    <BubbleMenuBar 
+    {editor && (<BubbleMenuBar 
       editor={editor} 
       showBubbleMenu={showBubbleMenu} 
       showLinkSelector={showLinkSelector} 
       setShowLinkSelector={setShowLinkSelector} 
-    />
+    />)}
     
     {/* The floating menu bar that appears with the plus button */}
-    <FloatingMenuBar 
+    {editor && (<FloatingMenuBar 
       editor={editor}
       showPlusButton={showPlusButton}
       showFloatingMenu={showFloatingMenu}
       setShowFloatingMenu={setShowFloatingMenu}
       isUploading={isUploading}
       setIsUploading={setIsUploading}
-    />
+    />)}
     
     {/* The main editor content */}
 

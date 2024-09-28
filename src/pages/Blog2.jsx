@@ -51,23 +51,23 @@ const Blog2 = ()=>{
 		{ 
 			'id':1,
 			'title':'First',
-			'content':'content of the first blog post in the and more and more and more so that it beomes more than one lineand more and more  list ',
-			'date':'Sept 4'
+			'truncated_content':'content of the first blog post in the and more and more and more so that it beomes more than one lineand more and more  list ',
+			'created_at':'Sept 4'
 		},
 		{	'id':2,
 			'title':'Lemon and Life ',
-			'content':'When Life gives you lemons you make a lemonade',
-			'date':'Sept 5'
+			'truncated_content':'When Life gives you lemons you make a lemonade',
+			'created_at':'Sept 5'
 		},
 		{	'id':3,
-			'title':'Lemon and Life ',
-			'content':'When Life gives you lemons you make a lemonade',
-			'date':'Sept 5'
+			'title':'A long title that takes more than three lines to view how overflow is handled  ',
+			'truncated_content':'When Life gives you lemons you make a lemonade',
+			'created_at':'Sept 5'
 		},
 		{	'id':4,
 			'title':'Lemon and Life ',
-			'content':'When Life gives you lemons you make a lemonade',
-			'date':'Sept 5'
+			'truncated_content':'When Life gives you lemons you make a lemonade',
+			'created_at':'Sept 5'
 		}
 
 	];
