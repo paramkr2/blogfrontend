@@ -8,7 +8,7 @@ import { Save as SaveIcon, Delete as DeleteIcon, Preview as PreviewIcon , Edit a
 
 import PostList from '../components/PostList.jsx'; 
 import EditProfile from '../components/EditProfile.jsx';
-
+import QueryManager from '../components/QueryManager.jsx'
 function DashboardPage() {
   const { isLoggedIn , setIsLoggedIn} = useAuth();
   const [tabValue, setTabValue] = useState(0);
@@ -145,7 +145,7 @@ function DashboardPage() {
   return (
     <Box sx={{ padding: '20px' }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-        <h2>Admin Dashboard</h2>
+        <h2>Dashboard</h2>
         <div>
           <Button 
             onClick={handleProfileModalOpen} 
@@ -201,6 +201,7 @@ function DashboardPage() {
     <Tabs value={tabValue} onChange={handleTabChange}>
       <Tab label="Published Posts" />
       <Tab label="Drafts" />
+      <Tab label="Queries" />
     </Tabs>
 
     <Box sx={{ marginTop: '20px' }}>
@@ -240,6 +241,8 @@ function DashboardPage() {
           />
         </>
       )}
+
+      {tabValue === 2 && <QueryManager />} {/* Queries */}
     </Box>
 
     <EditProfile

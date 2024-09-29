@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Container, Grid, Typography, Button, Card, CardContent, CardMedia } from '@mui/material';
+import { Container, Grid, Typography, Button, Card, CardContent, CardMedia,Box } from '@mui/material';
 import './styles/HomePage.css';
 import tradingImage  from './trading_default.jpg';
 import services from './services.png';
 import strategy from './strategy.png';
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
+
+import ContactForm from '../components/ContactForm.jsx'
 
 export default function HomePage() {
   const [recentPosts, setRecentPosts] = useState([]);
@@ -31,57 +33,75 @@ export default function HomePage() {
     <div className="home">
       {/* First Section */}
       <div className="section section1" id="welcome-section" >
-      <Container maxWidth="lg">
-        <Grid container spacing={4} alignItems="center">
-          {/* Left column - Brief about the site */}
-          <Grid item xs={12} md={6}>
-            <motion.div
-              initial={{ opacity: 0.1, filter: 'blur(10px)' }}
-              animate={{ opacity: 1, filter: 'blur(0px)' }} 
-              transition={{ duration: 0.5, ease: 'easeOut', delay: 0.1 }}
-            >
-              <Typography variant="h3" component="h3" gutterBottom 
-                className="fade-in-text"
+        <Container maxWidth="lg">
+          <Grid container spacing={4} alignItems="center">
+            {/* Left column - Brief about the site */}
+            <Grid item xs={12} md={6}>
+              <motion.div
+                initial={{ opacity: 0.1, filter: 'blur(10px)' }}
+                animate={{ opacity: 1, filter: 'blur(0px)' }}
+                transition={{ duration: 0.5, ease: 'easeOut', delay: 0.1 }}
+              >
+                <Typography
+                  variant="h3"
+                  component="h3"
+                  gutterBottom
+                  className="fade-in-text"
                 >
-                <span className="word">The industry’s</span> 
-                <span className="word">best tactical asset allocation</span> 
-                <span className="word">strategies, in one place.</span>
-              </Typography>
-              <Typography variant="h5" paragraph>
+                  <span className="word">The industry’s</span>
+                  <span className="word">best tactical asset allocation</span>
+                  <span className="word">strategies, in one place.</span>
+                </Typography>
+                
+                <Typography variant="h5" component="div" paragraph sx={{ paddingTop: '10px' }}>
                   
-                <div>
-                  <h1>What we do</h1>
-                </div>
-                <div>
-                  <div>Build bots to trade crypto, stocks, and futures</div>
-                  <div>
-                    <motion.button
-                      onClick={(e) => {}}
-                      whileHover={{ scale: 1.1 }}
-                      style={{ padding: '10px 20px', cursor: 'pointer' }}
-                    >
-                      Learn more
-                    </motion.button>
-                  </div>
-                </div>
-              </Typography>
-            </motion.div>
-          </Grid>
+                    <Typography variant="h4" component="h1" gutterBottom sx={{ marginBottom: '0px' }}>
+                      What we do
+                    </Typography>
 
-          {/* Right column - Transparent image */}
-          <Grid item xs={12} md={6}>
-            <motion.img
-              src="https://cdn.prod.website-files.com/65609fbba58b94d045220b6e/65782e339367bc55febf5551_Trade%2001-p-500.png"
-              alt="Site overview"
-              style={{ width: '100%', maxWidth: '500px', objectFit: 'contain' }}
-              initial={{ opacity: 0.1, filter: 'blur(10px)' }}
-              animate={ { opacity: 1, filter: 'blur(0px)' }}
-              transition={{ duration: 0.5, ease: 'easeOut', delay: 0.1 }} // Adjusted delay for the image
-            />
+                    <Typography variant="h5" sx={{ marginBottom: '20px' }}>
+                      Build bots to trade crypto, stocks, and futures
+                      <motion.span
+                        whileHover={{ scale: 1.1 }}
+                        style={{ display: 'inline-block', marginLeft: '10px' }}
+                      >
+                        <Button
+                          variant="outlined"
+                          sx={{
+                            border: '2px solid transparent',
+                            color: 'rgba(0, 0, 0, 0.7)', // Transparent color
+                            transition: 'all 0.3s ease',
+                            '&:hover': {
+                              backgroundColor: 'rgba(0, 0, 0, 0.1)',
+                              color: 'black', // On hover becomes blacker
+                              borderColor: 'black',
+                            },
+                          }}
+                        >
+                          Learn More
+                        </Button>
+                      </motion.span>
+                    </Typography>
+
+                  
+                </Typography>
+              </motion.div>
+            </Grid>
+
+            {/* Right column - Transparent image */}
+            <Grid item xs={12} md={6}>
+              <motion.img
+                src="https://cdn.prod.website-files.com/65609fbba58b94d045220b6e/65782e339367bc55febf5551_Trade%2001-p-500.png"
+                alt="Site overview"
+                style={{ width: '100%', maxWidth: '500px', objectFit: 'contain' }}
+                initial={{ opacity: 0.1, filter: 'blur(10px)' }}
+                animate={ { opacity: 1, filter: 'blur(0px)' }}
+                transition={{ duration: 0.5, ease: 'easeOut', delay: 0.1 }} // Adjusted delay for the image
+              />
+            </Grid>
           </Grid>
-        </Grid>
-      </Container>
-    </div>
+        </Container>
+      </div>
 
       {/* Second Section - Recent Posts */}
       <div className="section section2">
@@ -151,31 +171,45 @@ export default function HomePage() {
           <Grid container spacing={4} alignItems="center">
             {/* Left column - Brief about the site */}
             <Grid item xs={12} md={6}>
+
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.5, delay: 0.2 }} // Delay for all text
+                initial={{ opacity: 0.1, filter: 'blur(10px)' }}
+                animate={isInView ? { opacity: 1, filter: 'blur(0px)' } : {}}
+                transition={{ duration: 0.5, ease: 'easeOut', delay: 0.1 }}
               >
                 <Typography variant="h3" component="h3" gutterBottom className="fade-in-text">
-                  <span className="word">About</span> <span className="word">us</span> 
+                  <span className="word">About</span> <span className="word">Us</span> 
                 </Typography>
-                <Typography variant="h5" paragraph sx={{ fontSize: '0.9rem' }}>
+                <Typography variant="h6" paragraph>
                   <p>
                     Cryptogull builds bots to trade crypto, stocks, and futures. We utilize tech, data, and economic intuition to find trends and automate profits.
                   </p>
-                  <h2 style={{ textAlign: 'left' }}>Team</h2>
-                  <ul style={{ listStyleType: 'none', paddingLeft: 0 }}>
-                    <li style={{ fontSize: '0.8rem' }}>
-                      <span >Gull</span> — Trader and Quant.
-                    </li>
-                    <li style={{ fontSize: '0.8rem' }}>
-                      <span >Narender</span> — Algorithmic Trading Software Developer
-                    </li>
-                    <li style={{ fontSize: '0.8rem' }}>
-                      <span >Vivek</span> — Full Stack Developer
-                    </li>
-                  </ul>
                 </Typography>
+                <Box
+                  sx={{
+                    backgroundColor: 'rgba(0, 0, 0, 0.1)', // Semi-transparent white
+                    padding: '20px',
+                    borderRadius: '8px', // Rounded corners
+                    boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)', // Light shadow for depth
+                    maxWidth: '600px', // Optional max width for a cleaner layout
+                    margin: '0 auto', // Centering the box
+                  }}
+                >
+                  <Typography variant="h6" paragraph>
+                    <h2 style={{ textAlign: 'center' }}>Our Team</h2>
+                    <ul style={{ listStyleType: 'none', paddingLeft: 0 }}>
+                      <li style={{ fontSize: '1rem' }}>
+                        <span>Gull</span> — Trader and Quant.
+                      </li>
+                      <li style={{ fontSize: '1rem' }}>
+                        <span>Narender</span> — Algorithmic Trading Software Developer
+                      </li>
+                      <li style={{ fontSize: '1rem' }}>
+                        <span>Vivek</span> — Full Stack Developer
+                      </li>
+                    </ul>
+                  </Typography>
+                </Box>
               </motion.div>
             </Grid>
 
@@ -199,28 +233,34 @@ export default function HomePage() {
           <Grid container spacing={4} alignItems="center">
             {/* Left column - Brief about the site */}
             <Grid item xs={12} md={6} >
-              <Typography variant="h3" component="h3" gutterBottom className="fade-in-text">
-                <span className="word">Contact</span> <span className="word">Us</span> 
-              </Typography>
-              <Typography variant="h5" paragraph>
-                
+              <motion.div
+                initial={{ opacity: 0.1, filter: 'blur(10px)' }}
+                animate={isInView ? { opacity: 1, filter: 'blur(0px)' } : {}}
+                transition={{ duration: 0.5, ease: 'easeOut', delay: 0.1 }}
+              >
+                <Typography variant="h3" component="h3" gutterBottom className="fade-in-text">
+                  <span className="word">Contact</span> <span className="word">Us</span> 
+                </Typography>
+                <Typography variant="h5" paragraph>
+                  
+                    
                   <p>
-                    We'd love to hear from you. Please use the form below to email us, and we will respond within 24 hours.
-                  </p>
-                <p>
-                Email: <a href="mailto:gull@cryptogull.io">gull@cryptogull.io</a><br />
-                Twitter: <a href="https://twitter.com/cryptogull_io">@cryptogull_io</a>
-              </p>
-              </Typography>
+                  Email: <a href="mailto:gull@cryptogull.io">gull@cryptogull.io</a><br />
+                  Twitter: <a href="https://twitter.com/cryptogull_io">@cryptogull_io</a>
+                </p>
+                </Typography>
+              </motion.div>
               
             </Grid>
             {/* Right column - Transparent image */}
             <Grid item xs={12} md={6}>
-              <img
-                src={services} // Update with your image path
-                alt="Site overview"
-                style={{ width: '100%', maxWidth: '500px', objectFit: 'contain' }}
-              />
+              <motion.div
+                initial={{ opacity: 0.1, filter: 'blur(10px)' }}
+                animate={isInView ? { opacity: 1, filter: 'blur(0px)' } : {}}
+                transition={{ duration: 0.5, ease: 'easeOut', delay: 0.1 }}
+              >
+               <ContactForm />
+              </motion.div>
             </Grid>
           </Grid>
         </Container>
