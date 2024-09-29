@@ -18,9 +18,7 @@ export default function HomePage() {
 
   useEffect(() => {
     axios
-      .get(`${import.meta.env.VITE_API_URL}/api/posts?type=published&pagno=1`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-      })
+      .get(`${import.meta.env.VITE_API_URL}/api/posts?type=published&pagno=1`)
       .then((response) => {
         setRecentPosts(response.data.results || []);
       })
