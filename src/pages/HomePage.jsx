@@ -12,8 +12,10 @@ import ContactForm from '../components/ContactForm.jsx'
 
 export default function HomePage() {
   const [recentPosts, setRecentPosts] = useState([]);
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '-100px' }); // Trigger once when it's about to be in view
+  const ref_aboutus = useRef(null);
+  const ref_contactus = useRef(null);
+  const isInView_aboutus = useInView(ref_aboutus, { once: true, margin: '50px' }); // Trigger once when it's about to be in view
+  const isInView_contactus = useInView(ref_contactus, { once: true, margin: '50px' }); // Trigger once when it's about to be in view
 
 
   useEffect(() => {
@@ -88,14 +90,24 @@ export default function HomePage() {
 
             {/* Right column - Transparent image */}
             <Grid item xs={12} md={6}>
-              <motion.img
-                src="https://cdn.prod.website-files.com/65609fbba58b94d045220b6e/65782e339367bc55febf5551_Trade%2001-p-500.png"
-                alt="Site overview"
-                style={{ width: '100%', maxWidth: '500px', objectFit: 'contain' }}
-                initial={{ opacity: 0.1, filter: 'blur(10px)' }}
-                animate={ { opacity: 1, filter: 'blur(0px)' }}
-                transition={{ duration: 0.5, ease: 'easeOut', delay: 0.1 }} // Adjusted delay for the image
-              />
+              <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                <motion.img
+                  src={strategy} 
+                  alt="Site overview"
+                  style={{
+                    width: '70%',
+                    maxWidth: '500px',
+                    objectFit: 'contain',
+                    border: '5px solid rgba(0, 0, 0, 0.2)', // Border with light opacity
+                    borderRadius: '10px', // Rounded corners for the image
+                    padding: '10px', // Space around the image
+                    backgroundColor: 'rgba(255, 255, 255, 0.9)', // Light background to highlight the image
+                  }}
+                  initial={{ opacity: 0.1, filter: 'blur(10px)' }}
+                  animate={{ opacity: 1, filter: 'blur(0px)' }}
+                  transition={{ duration: 0.5, ease: 'easeOut', delay: 0.1 }}
+                />
+              </Box>
             </Grid>
           </Grid>
         </Container>
@@ -164,7 +176,7 @@ export default function HomePage() {
       </div>
 
 
-       <div className="section section3" id="aboutus" ref={ref}>
+       <div className="section section3" id="aboutus" ref={ref_aboutus}>
         <Container maxWidth="lg"  className="section-inside">
           <Grid container spacing={4} alignItems="center">
             {/* Left column - Brief about the site */}
@@ -172,7 +184,7 @@ export default function HomePage() {
 
               <motion.div
                 initial={{ opacity: 0.1, filter: 'blur(10px)' }}
-                animate={isInView ? { opacity: 1, filter: 'blur(0px)' } : {}}
+                animate={isInView_aboutus ? { opacity: 1, filter: 'blur(0px)' } : {}}
                 transition={{ duration: 0.5, ease: 'easeOut', delay: 0.1 }}
               >
                 <Typography variant="h3" component="h3" gutterBottom className="fade-in-text">
@@ -183,57 +195,60 @@ export default function HomePage() {
                     Cryptogull builds bots to trade crypto, stocks, and futures. We utilize tech, data, and economic intuition to find trends and automate profits.
                   </p>
                 </Typography>
-                <Box
-                  sx={{
-                    backgroundColor: 'rgba(0, 0, 0, 0.1)', // Semi-transparent white
-                    padding: '20px',
-                    borderRadius: '8px', // Rounded corners
-                    boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)', // Light shadow for depth
-                    maxWidth: '600px', // Optional max width for a cleaner layout
-                    margin: '0 auto', // Centering the box
-                  }}
-                >
-                  <Typography variant="h6" paragraph>
-                    <h2 style={{ textAlign: 'center' }}>Our Team</h2>
-                    <ul style={{ listStyleType: 'none', paddingLeft: 0 }}>
-                      <li style={{ fontSize: '1rem' }}>
-                        <span>Gull</span> — Trader and Quant.
-                      </li>
-                      <li style={{ fontSize: '1rem' }}>
-                        <span>Narender</span> — Algorithmic Trading Software Developer
-                      </li>
-                      <li style={{ fontSize: '1rem' }}>
-                        <span>Vivek</span> — Full Stack Developer
-                      </li>
-                    </ul>
-                  </Typography>
-                </Box>
+                
               </motion.div>
             </Grid>
 
           {/* Right column - Transparent image */}
           <Grid item xs={12} md={6}>
-            <motion.img
-              src={services}  // Update with your image path
-              alt="Site overview"
-              style={{ width: '100%', maxWidth: '500px', objectFit: 'contain' }}
-              initial={{ opacity: 0 }}
-              animate={isInView ? { opacity: 1 } : {}}
-              transition={{ duration: 0.5, delay: 0.5 }} // Delay for image
-            />
+            {/*
+              <motion.img
+                src={services}  // Update with your image path
+                alt="Site overview"
+                style={{ width: '100%', maxWidth: '500px', objectFit: 'contain' }}
+                initial={{ opacity: 0 }}
+                animate={isInView_aboutus ? { opacity: 1 } : {}}
+                transition={{ duration: 0.5, delay: 0.5 }} // Delay for image
+              />
+            */}
+            <Box
+              sx={{
+                backgroundColor: 'rgba(0, 0, 0, 0.1)', // Semi-transparent white
+                padding: '20px',
+                borderRadius: '8px', // Rounded corners
+                boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)', // Light shadow for depth
+                maxWidth: '600px', // Optional max width for a cleaner layout
+                margin: '0 auto', // Centering the box
+              }}
+            >
+              <Typography variant="h6" paragraph>
+                <h2 style={{ textAlign: 'center' }}>Our Team</h2>
+                <ul style={{ listStyleType: 'none', paddingLeft: 0 }}>
+                  <li style={{ fontSize: '1rem' }}>
+                    <span>Gull</span> — Trader and Quant.
+                  </li>
+                  <li style={{ fontSize: '1rem' }}>
+                    <span>Narender</span> — Algorithmic Trading Software Developer
+                  </li>
+                  <li style={{ fontSize: '1rem' }}>
+                    <span>Vivek</span> — Full Stack Developer
+                  </li>
+                </ul>
+              </Typography>
+            </Box>
           </Grid>
         </Grid>
       </Container>
     </div>
 
-      <div className="section section4" id="contact">
+      <div className="section section4" id="contact" ref={ref_contactus}>
         <Container maxWidth="lg"  className="section-inside">
           <Grid container spacing={4} alignItems="center">
             {/* Left column - Brief about the site */}
             <Grid item xs={12} md={6} >
               <motion.div
                 initial={{ opacity: 0.1, filter: 'blur(10px)' }}
-                animate={isInView ? { opacity: 1, filter: 'blur(0px)' } : {}}
+                animate={isInView_contactus ? { opacity: 1, filter: 'blur(0px)' } : {}}
                 transition={{ duration: 0.5, ease: 'easeOut', delay: 0.1 }}
               >
                 <Typography variant="h3" component="h3" gutterBottom className="fade-in-text">
@@ -254,7 +269,7 @@ export default function HomePage() {
             <Grid item xs={12} md={6}>
               <motion.div
                 initial={{ opacity: 0.1, filter: 'blur(10px)' }}
-                animate={isInView ? { opacity: 1, filter: 'blur(0px)' } : {}}
+                animate={isInView_contactus ? { opacity: 1, filter: 'blur(0px)' } : {}}
                 transition={{ duration: 0.5, ease: 'easeOut', delay: 0.1 }}
               >
                <ContactForm />
