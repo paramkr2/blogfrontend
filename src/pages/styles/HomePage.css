@@ -10,10 +10,13 @@
   align-items: center;
   text-align: center;
 }
+.section-inside{
+  margin-top:75px;
+}
 
 .section1 {
   background-color: #e3f2fd; /* Blue background */
-  text-align: left;
+  
 }
 
 .section2 {

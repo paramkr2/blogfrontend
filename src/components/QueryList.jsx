@@ -76,7 +76,7 @@ const QueryList = ({ queries, onOpenQueryModal , fetchQueries}) => {
     }
   };
 
-  return (
+  return  (
     <List>
       {queries.map((query) => (
         <ListItem
@@ -85,6 +85,8 @@ const QueryList = ({ queries, onOpenQueryModal , fetchQueries}) => {
           sx={{
             cursor: 'pointer',
             '&:hover': { backgroundColor: '#f0f0f0' },
+            display: 'flex',
+            alignItems: 'center',
           }}
           onClick={() => onOpenQueryModal(query)}
         >
@@ -92,24 +94,35 @@ const QueryList = ({ queries, onOpenQueryModal , fetchQueries}) => {
             primary={query.name}
             secondary={
               <>
-                <Typography component="span" variant="body2">
-                  {query.email}
+                {/* Truncated message in a single line */}
+                <Typography
+                  component="span"
+                  variant="body2"
+                  sx={{
+                    display: 'block',
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                  }}
+                >
+                  {query.message}
                 </Typography>
+                {/* Formatted date and time (AM/PM) */}
                 <Typography component="span" variant="body2" sx={{ display: 'block' }}>
-                  {new Date(query.created_at).toLocaleString()}
+                  {new Date(query.created_at).toLocaleDateString()} - {new Date(query.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                 </Typography>
               </>
             }
           />
 
-          {/* Star/Unstar Toggle */}
+          {/* Star/Unstar Toggle Icon */}
           <Tooltip title={query.starred ? 'Unstar' : 'Star'}>
             <Button
               onClick={(e) => {
                 e.stopPropagation(); // Prevent modal opening
                 handleToggleStarred(query.id, query.starred);
               }}
-              sx={{ marginLeft: 'auto' }}
+              sx={{ minWidth: 0 }} // Reduce button width
               disabled={loadingStates.loadingStarred === query.id}
             >
               {loadingStates.loadingStarred === query.id ? (
@@ -118,25 +131,25 @@ const QueryList = ({ queries, onOpenQueryModal , fetchQueries}) => {
             </Button>
           </Tooltip>
 
-          {/* Done/Not Done Toggle with CircularProgress */}
+          {/* Done/Not Done Toggle Icon */}
           <Tooltip title={query.done ? 'Mark as not done' : 'Mark as done'}>
             <Button
               onClick={(e) => {
                 e.stopPropagation(); // Prevent modal opening
                 handleToggleDone(query.id, query.done);
               }}
-              sx={{ marginLeft: '10px', color: query.done ? 'green' : 'red' }}
-              disabled={loadingStates.loadingDone === query.id} // Disable when updating
+              sx={{ width:'10%', marginLeft: '5px', color: query.done ? 'green' : 'red' }} // Reduce button width
+              disabled={loadingStates.loadingDone === query.id}
             >
               {loadingStates.loadingDone === query.id ? (
                 <CircularProgress size={20} />
               ) : (
-                query.done ? 'Done' : 'Not Done'
+                query.done ? <Typography variant="body2" sx={{ color: 'green' }}>Done</Typography> : <Typography variant="body2" sx={{ color: 'red' }}>Not Done</Typography>
               )}
             </Button>
           </Tooltip>
 
-          {/* Delete Button with CircularProgress */}
+          {/* Delete Button Icon */}
           <Tooltip title="Delete Query">
             <Button
               variant="text"
@@ -145,7 +158,8 @@ const QueryList = ({ queries, onOpenQueryModal , fetchQueries}) => {
                 e.stopPropagation(); // Prevent modal opening
                 handleDeleteQuery(query.id);
               }}
-              disabled={loadingStates.loadingDelete === query.id} // Disable when deleting
+              sx={{ minWidth: 0, marginLeft: '10px' }} // Reduce button width
+              disabled={loadingStates.loadingDelete === query.id}
             >
               {loadingStates.loadingDelete === query.id ? <CircularProgress size={20} /> : <DeleteIcon />}
             </Button>

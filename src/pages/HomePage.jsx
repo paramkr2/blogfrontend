@@ -67,7 +67,7 @@ export default function HomePage() {
                           variant="outlined"
                           sx={{
                             border: '2px solid transparent',
-                            color: 'rgba(0, 0, 0, 0.7)', // Transparent color
+                            color: 'rgba(0, 0, 0,1)', // Transparent color
                             transition: 'all 0.3s ease',
                             '&:hover': {
                               backgroundColor: 'rgba(0, 0, 0, 0.1)',
@@ -103,7 +103,7 @@ export default function HomePage() {
 
       {/* Second Section - Recent Posts */}
       <div className="section section2">
-        <Container maxWidth="lg">
+        <Container maxWidth="lg"  className="section-inside">
           <Typography variant="h4" component="h2" gutterBottom>
             Recent Posts
           </Typography>
@@ -165,7 +165,7 @@ export default function HomePage() {
 
 
        <div className="section section3" id="aboutus" ref={ref}>
-        <Container maxWidth="lg">
+        <Container maxWidth="lg"  className="section-inside">
           <Grid container spacing={4} alignItems="center">
             {/* Left column - Brief about the site */}
             <Grid item xs={12} md={6}>
@@ -227,7 +227,7 @@ export default function HomePage() {
     </div>
 
       <div className="section section4" id="contact">
-        <Container maxWidth="lg">
+        <Container maxWidth="lg"  className="section-inside">
           <Grid container spacing={4} alignItems="center">
             {/* Left column - Brief about the site */}
             <Grid item xs={12} md={6} >

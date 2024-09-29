@@ -1,74 +1,88 @@
 import React from 'react';
-import { Grid, Box, Button, Tooltip, Typography, Skeleton, CircularProgress } from '@mui/material';
+import { List, ListItem, ListItemText, Box, Button, Tooltip, Typography, Skeleton, CircularProgress, IconButton } from '@mui/material';
 import { Preview as PreviewIcon, Edit as EditIcon, Delete as DeleteIcon } from '@mui/icons-material';
 
 const PostList = React.memo(({ posts, loading, onEdit, onDelete, deletingId, onPreview }) => {
   if (loading) {
     return (
-      <Grid container spacing={2}>
+      <List>
         {[1, 2, 3].map((_, index) => (
-          <Grid item xs={12} key={index}>
-            <Skeleton variant="rectangular" width="100%" height={80} />
-          </Grid>
-        ))}  
-      </Grid>
+          <ListItem key={index} divider>
+            <Skeleton variant="rectangular" width="100%" height={40} />
+          </ListItem>
+        ))}
+      </List>
     );
   }
 
   return (
-    <Grid container spacing={2}>
+    <List>
       {posts.map((post) => (
-        <Grid item xs={12} key={post.id} className="post-item">
-          <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              padding: '10px',
-              border: '1px solid #ddd',
-              borderRadius: '5px',
-            }}
-          >
-            <Tooltip title={post.title}>
-              <Typography noWrap variant="h6" component="h3" sx={{ maxWidth: '800px' }}>
-                {post.title}
-              </Typography>
+        <ListItem
+          key={post.id}
+          divider
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            padding: '10px',
+            '&:hover': { backgroundColor: '#f0f0f0' },
+          }}
+        >
+          {/* Post Title with Tooltip */}
+          <ListItemText
+            primary={
+              <Tooltip title={post.title} arrow>
+                <Typography noWrap variant="h6" sx={{ maxWidth: '800px' }}>
+                  {post.title}
+                </Typography>
+              </Tooltip>
+            }
+          />
+
+          {/* Action Buttons */}
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Tooltip title="View" arrow>
+              <IconButton
+                color="primary"
+                onClick={() => onPreview(post.id)}
+                sx={{ marginLeft: '10px' }}
+                aria-label="Preview post"
+              >
+                <PreviewIcon />
+              </IconButton>
             </Tooltip>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <Tooltip title="View" arrow>
-                <Button variant="text" color="primary" onClick={() => onPreview(post.id)} sx={{ marginLeft: '10px', minWidth: 'auto', padding: 0 }} aria-label="Preview post">
-                  <PreviewIcon />
-                </Button>
+
+            <Tooltip title="Edit" arrow>
+              <IconButton
+                color="secondary"
+                onClick={() => onEdit(post.id)}
+                sx={{ marginLeft: '10px' }}
+                aria-label="Edit post"
+              >
+                <EditIcon />
+              </IconButton>
+            </Tooltip>
+
+            {/* Delete Button with Loading State */}
+            {deletingId === Number(post.id) ? (
+              <CircularProgress size={24} sx={{ marginLeft: '10px' }} color="error" />
+            ) : (
+              <Tooltip title="Delete" arrow>
+                <IconButton
+                  color="error"
+                  onClick={() => onDelete(post.id)}
+                  sx={{ marginLeft: '10px' }}
+                  aria-label="Delete post"
+                >
+                  <DeleteIcon />
+                </IconButton>
               </Tooltip>
-              <Tooltip title="Edit" arrow>
-                <Button variant="text" color="secondary" onClick={() => onEdit(post.id)} sx={{ marginLeft: '10px', minWidth: 'auto', padding: 0 }} aria-label="Edit post">
-                  <EditIcon />
-                </Button>
-              </Tooltip>
-              { deletingId == Number(post.id) ? (
-                <CircularProgress size={24} sx={{ marginLeft: '10px' }} color="error" />
-                ) : (
-                  <Tooltip title="Delete" arrow>
-                    <Button
-                      variant="text"
-                      color="secondary"
-                      onClick={() => onDelete(post.id)}
-                      sx={{
-                        marginLeft: '10px',
-                        minWidth: 'auto',
-                        padding: 0,
-                      }}
-                      aria-label="Delete post"
-                    >
-                      <DeleteIcon />
-                    </Button>
-                  </Tooltip>
-                )}
-            </div>
+            )}
           </Box>
-        </Grid>
+        </ListItem>
       ))}
-    </Grid>
+    </List>
   );
 });
 

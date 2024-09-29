@@ -16,7 +16,7 @@ function App() {
   return (
     <Router>
       <Navbar />
-      <div style={{marginTop:'100px'}}> 
+      <div style={{marginTop:'75px'}}> 
         <Routes>
           <Route path="/" element={<HomePage />} /> {/* Homepage route */}
           <Route path="/blog/:postId/edit" element={<BlogEditPage />} />
