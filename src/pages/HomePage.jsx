@@ -7,6 +7,8 @@ import services from './services.png';
 import strategy from './strategy.png';
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 
 import ContactForm from '../components/ContactForm.jsx'
 
@@ -16,6 +18,16 @@ export default function HomePage() {
   const ref_contactus = useRef(null);
   const isInView_aboutus = useInView(ref_aboutus, { once: true, margin: '50px' }); // Trigger once when it's about to be in view
   const isInView_contactus = useInView(ref_contactus, { once: true, margin: '50px' }); // Trigger once when it's about to be in view
+
+  const scrollToSection = (id) => {
+    // Ensure that the section exists in the DOM
+    
+      const section = document.getElementById(id);
+      if (section) {
+        section.scrollIntoView({ behavior: 'smooth' });
+      }
+     // Call immediately after layout is updated
+  };
 
 
   useEffect(() => {
@@ -61,12 +73,13 @@ export default function HomePage() {
 
                     <Typography variant="h5" sx={{ marginBottom: '20px' }}>
                       Build bots to trade crypto, stocks, and futures
-                      <motion.span
-                        whileHover={{ scale: 1.1 }}
-                        style={{ display: 'inline-block', marginLeft: '10px' }}
-                      >
+                        <motion.span
+                          whileHover={{ scale: 1.1 }}
+                          style={{ display: 'inline-block', marginLeft: '10px' }}
+                        >
                         <Button
                           variant="outlined"
+                          onClick={() => scrollToSection('aboutus')}
                           sx={{
                             border: '2px solid transparent',
                             color: 'rgba(0, 0, 0,1)', // Transparent color
@@ -82,8 +95,6 @@ export default function HomePage() {
                         </Button>
                       </motion.span>
                     </Typography>
-
-                  
                 </Typography>
               </motion.div>
             </Grid>
@@ -99,13 +110,14 @@ export default function HomePage() {
                     maxWidth: '500px',
                     objectFit: 'contain',
                     border: '5px solid rgba(0, 0, 0, 0.2)', // Border with light opacity
+
                     borderRadius: '10px', // Rounded corners for the image
                     padding: '10px', // Space around the image
                     backgroundColor: 'rgba(255, 255, 255, 0.9)', // Light background to highlight the image
                   }}
                   initial={{ opacity: 0.1, filter: 'blur(10px)' }}
                   animate={{ opacity: 1, filter: 'blur(0px)' }}
-                  transition={{ duration: 0.5, ease: 'easeOut', delay: 0.1 }}
+                  transition={{ duration: 1, ease: 'easeOut', delay: 0.1 }}
                 />
               </Box>
             </Grid>
@@ -208,7 +220,7 @@ export default function HomePage() {
                 style={{ width: '100%', maxWidth: '500px', objectFit: 'contain' }}
                 initial={{ opacity: 0 }}
                 animate={isInView_aboutus ? { opacity: 1 } : {}}
-                transition={{ duration: 0.5, delay: 0.5 }} // Delay for image
+                transition={{ duration: 1, delay: 0.5 }} // Delay for image
               />
             */}
             <Box
@@ -249,7 +261,7 @@ export default function HomePage() {
               <motion.div
                 initial={{ opacity: 0.1, filter: 'blur(10px)' }}
                 animate={isInView_contactus ? { opacity: 1, filter: 'blur(0px)' } : {}}
-                transition={{ duration: 0.5, ease: 'easeOut', delay: 0.1 }}
+                transition={{ duration: 1, ease: 'easeOut', delay: 0.1 }}
               >
                 <Typography variant="h3" component="h3" gutterBottom className="fade-in-text">
                   <span className="word">Contact</span> <span className="word">Us</span> 
