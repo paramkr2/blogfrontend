@@ -1,6 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { Button,List, ListItem, ListItemText, Box, Dialog, DialogTitle, DialogContent, DialogActions, Typography, Pagination } from '@mui/material';
+import {
+  Button,
+  Box,
+  Typography,
+  Tooltip,
+  Pagination,
+  FormControlLabel,
+  Checkbox,
+} from '@mui/material';
+import {
+  Delete as DeleteIcon,
+  Star as StarIcon,
+  StarBorder as StarBorderIcon,
+} from '@mui/icons-material';
 import axios from 'axios';
+import QueryModal from './QueryModal'; // Assuming QueryModal is in the same directory
+import QueryList from './QueryList'
+
 
 const QueryManager = () => {
   const [queries, setQueries] = useState([]);
@@ -9,12 +25,19 @@ const QueryManager = () => {
   const [selectedQuery, setSelectedQuery] = useState(null);
   const [page, setPage] = useState(1);
   const [count, setCount] = useState(0);
-
+  const [filterDone, setFilterDone] = useState(null); // null = no filter, true/false = filter done status
+  const [filterStarred, setFilterStarred] = useState(null); // null = no filter, true = show starred only
+  
   const fetchQueries = async () => {
     try {
-      const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/queries/?pageno=${page}`, {
+      let filterParams = `?pageno=${page}`;
+      if (filterDone !== null) filterParams += `&done=${filterDone}`;
+      if (filterStarred !== null) filterParams += `&starred=${filterStarred}`;
+
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/queries/${filterParams}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
       });
+
       setQueries(response.data.results || []);
       setCount(response.data.count || 0);
     } catch (error) {
@@ -27,7 +50,7 @@ const QueryManager = () => {
   useEffect(() => {
     setLoading(true);
     fetchQueries();
-  }, [page]);
+  }, [page, filterDone, filterStarred]);
 
   const handleOpenQueryModal = (query) => {
     setSelectedQuery(query);
@@ -43,78 +66,62 @@ const QueryManager = () => {
     setPage(value);
   };
 
-  return (
-    <Box>
-      {/* Query List */}
-      {loading ? (
-        <p>Loading queries...</p>
-      ) : queries.length === 0 ? (
-        <p>No queries found.</p>
-      ) : (
-        <List>
-          {queries.map((query) => (
-            <ListItem
-              key={query.id}
-              divider
-              sx={{
-                cursor: 'pointer',
-                '&:hover': { backgroundColor: '#f0f0f0' }, // Greyer background on hover
-              }}
-              onClick={() => handleOpenQueryModal(query)} // Open modal on row click
-            >
-              <ListItemText
-                primary={query.name}
-                secondary={
-                  <>
-                    <Typography component="span" variant="body2">
-                      {query.email}
-                    </Typography>
-                    <Typography component="span" variant="body2" sx={{ display: 'block' }}>
-                      {new Date(query.created_at).toLocaleString()}
-                    </Typography>
-                  </>
-                }
-              />
-            </ListItem>
-          ))}
-        </List>
-      )}
+  const handleFilterDone = () => {
+    setFilterDone(filterDone === true ? null : true); // Toggles between null and true (show done only)
+  };
 
-      {/* Pagination */}
+  const handleFilterStarred = () => {
+    setFilterStarred(filterStarred === true ? null : true); // Toggles between null and true (show starred only)
+  };
+
+  return (
+  <Box>
+    {/* Filter Checkboxes */}
+      <Box display="flex" gap={2} mb={2}>
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={filterDone === true}
+              onChange={() => setFilterDone(filterDone === true ? null : true)}
+              color="primary"
+            />
+          }
+          label="Show Done Only"
+        />
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={filterStarred === true}
+              onChange={() => setFilterStarred(filterStarred === true ? null : true)}
+              color="secondary"
+            />
+          }
+          label="Show Starred Only"
+        />
+      </Box>
+    {/* Query List */}
+    {loading ? (
+      <p>Loading queries...</p>
+    ) : queries.length === 0 ? (
+      <p>No queries found.</p>
+    ) : (
+      <QueryList queries={queries} onOpenQueryModal={handleOpenQueryModal} fetchQueries={fetchQueries} />
+    )}
+
+    {/* Pagination */}
+    <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
       <Pagination
-        count={Math.ceil(count / 5)}
+        count={Math.ceil(count / 10)} // Assuming 10 queries per page
         page={page}
         onChange={handlePageChange}
-        sx={{ marginTop: '20px' }}
+        color="primary"
       />
-
-      {/* Query Modal */}
-      <Dialog open={queryModalOpen} onClose={handleCloseQueryModal} fullWidth>
-        <DialogTitle>Query Details</DialogTitle>
-        <DialogContent>
-          {selectedQuery && (
-            <>
-              <Typography variant="body1">
-                <strong>Name:</strong> {selectedQuery.name}
-              </Typography>
-              <Typography variant="body1">
-                <strong>Email:</strong> {selectedQuery.email}
-              </Typography>
-              <Typography variant="body1">
-                <strong>Message:</strong> {selectedQuery.message}
-              </Typography>
-              <Typography variant="body1">
-                <strong>Date:</strong> {new Date(selectedQuery.created_at).toLocaleString()}
-              </Typography>
-            </>
-          )}
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseQueryModal} variant="contained">Close</Button>
-        </DialogActions>
-      </Dialog>
     </Box>
-  );
-};
+
+    {/* Query Modal */}
+    <QueryModal open={queryModalOpen} onClose={handleCloseQueryModal} query={selectedQuery} />
+  </Box>
+);
+}
 
 export default QueryManager;
