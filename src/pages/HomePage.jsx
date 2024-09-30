@@ -8,16 +8,14 @@ import strategy from './strategy.png';
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-
-
 import ContactForm from '../components/ContactForm.jsx'
 
 export default function HomePage() {
   const [recentPosts, setRecentPosts] = useState([]);
   const ref_aboutus = useRef(null);
   const ref_contactus = useRef(null);
-  const isInView_aboutus = useInView(ref_aboutus, { once: true, margin: '50px' }); // Trigger once when it's about to be in view
-  const isInView_contactus = useInView(ref_contactus, { once: true, margin: '50px' }); // Trigger once when it's about to be in view
+  const isInView_aboutus = useInView(ref_aboutus, { once: true, margin: '100px' }); // Trigger once when it's about to be in view
+  const isInView_contactus = useInView(ref_contactus, { once: true, margin: '100px' }); // Trigger once when it's about to be in view
 
   const scrollToSection = (id) => {
     // Ensure that the section exists in the DOM
@@ -125,8 +123,120 @@ export default function HomePage() {
         </Container>
       </div>
 
-      {/* Second Section - Recent Posts */}
-      <div className="section section2">
+      
+
+
+       <div className="section " id="aboutus" ref={ref_aboutus}>
+        <Container maxWidth="lg"  className="section-inside">
+          <Grid container spacing={4} alignItems="center">
+            {/* Left column - Brief about the site */}
+            <Grid item xs={12} md={6}>
+
+              <motion.div
+                initial={{ opacity: 0.1, filter: 'blur(10px)' }}
+                animate={isInView_aboutus ? { opacity: 1, filter: 'blur(0px)' } : {}}
+                transition={{ duration: 0.5, ease: 'easeOut', delay: 0.1 }}
+              >
+                <Typography variant="h3" component="h3" gutterBottom className="fade-in-text">
+                  <span className="word">About</span> <span className="word">Us</span> 
+                </Typography>
+                <Typography variant="h6" paragraph>
+                  <p>
+                    Cryptogull builds bots to trade crypto, stocks, and futures. We utilize tech, data, and economic intuition to find trends and automate profits.
+                  </p>
+                </Typography>
+                
+              </motion.div>
+            </Grid>
+
+          {/* Right column - Transparent image */}
+          <Grid item xs={12} md={6}>
+            {/*
+              <motion.img
+                src={services}  // Update with your image path
+                alt="Site overview"
+                style={{ width: '100%', maxWidth: '500px', objectFit: 'contain' }}
+                initial={{ opacity: 0 }}
+                animate={isInView_aboutus ? { opacity: 1 } : {}}
+                transition={{ duration: 1, delay: 0.5 }} // Delay for image
+              />
+            */}
+             <motion.div
+                initial={{ opacity: 0.1, filter: 'blur(10px)' }}
+                animate={isInView_aboutus ? { opacity: 1, filter: 'blur(0px)' } : {}}
+                transition={{ duration: 0.8, ease: 'easeOut', delay: 0.1 }}
+              >
+              <Box
+                sx={{
+                  backgroundColor: 'rgba(0, 0, 0, 0.1)', // Semi-transparent white
+                  padding: '20px',
+                  borderRadius: '8px', // Rounded corners
+                  boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)', // Light shadow for depth
+                  maxWidth: '600px', // Optional max width for a cleaner layout
+                  margin: '0 auto', // Centering the box
+                }}
+              >
+                <Typography variant="h6" paragraph>
+                  <h2 style={{ textAlign: 'center' }}>Our Team</h2>
+                  <ul style={{ listStyleType: 'none', paddingLeft: 0 }}>
+                    <li style={{ fontSize: '1rem' }}>
+                      <span>Gull</span> — Trader and Quant.
+                    </li>
+                    <li style={{ fontSize: '1rem' }}>
+                      <span>Narender</span> — Algorithmic Trading Software Developer
+                    </li>
+                    <li style={{ fontSize: '1rem' }}>
+                      <span>Vivek</span> — Full Stack Developer
+                    </li>
+                  </ul>
+                </Typography>
+              </Box>
+            </motion.div>
+          </Grid>
+        </Grid>
+      </Container>
+    </div>
+
+      <div className="section section3" id="contact" ref={ref_contactus}>
+        <Container maxWidth="lg"  className="section-inside">
+          <Grid container spacing={4} alignItems="center">
+            {/* Left column - Brief about the site */}
+            <Grid item xs={12} md={6} >
+              <motion.div
+                initial={{ opacity: 0.1, filter: 'blur(10px)' }}
+                animate={isInView_contactus ? { opacity: 1, filter: 'blur(0px)' } : {}}
+                transition={{ duration: 1, ease: 'easeOut', delay: 0.1 }}
+              >
+                <Typography variant="h3" component="h3" gutterBottom className="fade-in-text">
+                  <span className="word">Contact</span> <span className="word">Us</span> 
+                </Typography>
+                <Typography variant="h5" paragraph>
+                  
+                    
+                  <p>
+                  Email: <a href="mailto:gull@cryptogull.io">gull@cryptogull.io</a><br />
+                  Twitter: <a href="https://twitter.com/cryptogull_io">@cryptogull_io</a>
+                </p>
+                </Typography>
+              </motion.div>
+              
+            </Grid>
+            {/* Right column - Transparent image */}
+            <Grid item xs={12} md={6}>
+              <motion.div
+                initial={{ opacity: 0.1, filter: 'blur(10px)' }}
+                animate={isInView_contactus ? { opacity: 1, filter: 'blur(0px)' } : {}}
+                transition={{ duration: 0.5, ease: 'easeOut', delay: 0.1 }}
+              >
+               <ContactForm />
+              </motion.div>
+            </Grid>
+          </Grid>
+        </Container>
+      </div>
+
+        {/* Second Section - Recent Posts */}
+      <div className="section ">
         <Container maxWidth="lg"  className="section-inside">
           <Typography variant="h4" component="h2" gutterBottom>
             Recent Posts
@@ -166,7 +276,7 @@ export default function HomePage() {
                         style={{
                           height: '100%',
                           WebkitMaskImage: 'linear-gradient(to bottom, rgba(0, 0, 0, 1) 30%, rgba(0, 0, 0, 0.7) 70%, rgba(0, 0, 0, 0) 100%)', // Thicker fade effect
-                maskImage: 'linear-gradient(to bottom, rgba(0, 0, 0, 1) 30%, rgba(0, 0, 0, 0.7) 70%, rgba(0, 0, 0, 0) 100%)',
+                          maskImage: 'linear-gradient(to bottom, rgba(0, 0, 0, 1) 30%, rgba(0, 0, 0, 0.7) 70%, rgba(0, 0, 0, 0) 100%)',
                         }}
                       />
                     </div>
@@ -183,110 +293,6 @@ export default function HomePage() {
                 </Card>
               </Grid>
             ))}
-          </Grid>
-        </Container>
-      </div>
-
-
-       <div className="section section3" id="aboutus" ref={ref_aboutus}>
-        <Container maxWidth="lg"  className="section-inside">
-          <Grid container spacing={4} alignItems="center">
-            {/* Left column - Brief about the site */}
-            <Grid item xs={12} md={6}>
-
-              <motion.div
-                initial={{ opacity: 0.1, filter: 'blur(10px)' }}
-                animate={isInView_aboutus ? { opacity: 1, filter: 'blur(0px)' } : {}}
-                transition={{ duration: 0.5, ease: 'easeOut', delay: 0.1 }}
-              >
-                <Typography variant="h3" component="h3" gutterBottom className="fade-in-text">
-                  <span className="word">About</span> <span className="word">Us</span> 
-                </Typography>
-                <Typography variant="h6" paragraph>
-                  <p>
-                    Cryptogull builds bots to trade crypto, stocks, and futures. We utilize tech, data, and economic intuition to find trends and automate profits.
-                  </p>
-                </Typography>
-                
-              </motion.div>
-            </Grid>
-
-          {/* Right column - Transparent image */}
-          <Grid item xs={12} md={6}>
-            {/*
-              <motion.img
-                src={services}  // Update with your image path
-                alt="Site overview"
-                style={{ width: '100%', maxWidth: '500px', objectFit: 'contain' }}
-                initial={{ opacity: 0 }}
-                animate={isInView_aboutus ? { opacity: 1 } : {}}
-                transition={{ duration: 1, delay: 0.5 }} // Delay for image
-              />
-            */}
-            <Box
-              sx={{
-                backgroundColor: 'rgba(0, 0, 0, 0.1)', // Semi-transparent white
-                padding: '20px',
-                borderRadius: '8px', // Rounded corners
-                boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)', // Light shadow for depth
-                maxWidth: '600px', // Optional max width for a cleaner layout
-                margin: '0 auto', // Centering the box
-              }}
-            >
-              <Typography variant="h6" paragraph>
-                <h2 style={{ textAlign: 'center' }}>Our Team</h2>
-                <ul style={{ listStyleType: 'none', paddingLeft: 0 }}>
-                  <li style={{ fontSize: '1rem' }}>
-                    <span>Gull</span> — Trader and Quant.
-                  </li>
-                  <li style={{ fontSize: '1rem' }}>
-                    <span>Narender</span> — Algorithmic Trading Software Developer
-                  </li>
-                  <li style={{ fontSize: '1rem' }}>
-                    <span>Vivek</span> — Full Stack Developer
-                  </li>
-                </ul>
-              </Typography>
-            </Box>
-          </Grid>
-        </Grid>
-      </Container>
-    </div>
-
-      <div className="section section4" id="contact" ref={ref_contactus}>
-        <Container maxWidth="lg"  className="section-inside">
-          <Grid container spacing={4} alignItems="center">
-            {/* Left column - Brief about the site */}
-            <Grid item xs={12} md={6} >
-              <motion.div
-                initial={{ opacity: 0.1, filter: 'blur(10px)' }}
-                animate={isInView_contactus ? { opacity: 1, filter: 'blur(0px)' } : {}}
-                transition={{ duration: 1, ease: 'easeOut', delay: 0.1 }}
-              >
-                <Typography variant="h3" component="h3" gutterBottom className="fade-in-text">
-                  <span className="word">Contact</span> <span className="word">Us</span> 
-                </Typography>
-                <Typography variant="h5" paragraph>
-                  
-                    
-                  <p>
-                  Email: <a href="mailto:gull@cryptogull.io">gull@cryptogull.io</a><br />
-                  Twitter: <a href="https://twitter.com/cryptogull_io">@cryptogull_io</a>
-                </p>
-                </Typography>
-              </motion.div>
-              
-            </Grid>
-            {/* Right column - Transparent image */}
-            <Grid item xs={12} md={6}>
-              <motion.div
-                initial={{ opacity: 0.1, filter: 'blur(10px)' }}
-                animate={isInView_contactus ? { opacity: 1, filter: 'blur(0px)' } : {}}
-                transition={{ duration: 0.5, ease: 'easeOut', delay: 0.1 }}
-              >
-               <ContactForm />
-              </motion.div>
-            </Grid>
           </Grid>
         </Container>
       </div>
