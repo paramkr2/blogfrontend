@@ -1,10 +1,6 @@
-import { Editor } from "@tiptap/core";
-import { Check, Trash, X } from "lucide-react";
-import React, {  useState,useEffect,useRef } from "react";
-import { toast } from "sonner";
-import { Slider } from "@mui/material"
 
-import styles from './LinkSelector.module.css'; 
+import React, {  useState,useEffect,useRef } from "react";
+import { Slider } from "@mui/material"
 
 const ImageSlider = ({ editor, isImageSelected, setIsImageSelected }) =>{
   const [imageWidth, setImageWidth] = useState(100); // Default width
@@ -19,39 +15,58 @@ const ImageSlider = ({ editor, isImageSelected, setIsImageSelected }) =>{
     if (!editor) 
     	return;
 	const { node } = editor.state.selection; 
-	console.log(node.attrs)
+	
 	setImageWidth(parseInt(node.attrs.width) || 77); // Set width based on node attribute
     return ;
-  }, [editor]);
+  }, []);
 
   useEffect(() => {
-    const slider = sliderRef.current;
+	  const slider = sliderRef.current;
 
-    const handleTouchStart = event => {
-      event.preventDefault(); // Prevent the default behavior
-    };
+	  const handleTouch = event => {
+	    event.preventDefault(); // Prevent the default behavior
+	  };
 
-    if (slider) {
-      slider.addEventListener('touchstart', handleTouchStart, { passive: false });
-    }
+	  if (slider) {
+	    // Set the passive option to false
+	    slider.addEventListener('touchstart', handleTouch, { passive: false });
+	    slider.addEventListener('touchmove', handleTouch, { passive: false });
+	  }
 
-    // Clean up listener on unmount
-    return () => {
-      if (slider) {
-        slider.removeEventListener('touchstart', handleTouchStart);
-      }
-    };
-  }, []);
+	  // Clean up listener on unmount
+	  return () => {
+	    if (slider) {
+	      slider.removeEventListener('touchstart', handleTouch);
+	      slider.removeEventListener('touchmove', handleTouch);
+	    }
+	  };
+	}, []);
+
+   const handleMouseDown = (event) => {
+    console.log('Mouse down event triggered:', event);
+  };
+
+  const handleTouchStart = (event) => {
+    console.log('Touch start event triggered:', event);
+  };
+
+   const preventFocus = (event) => {
+    //event.preventDefault();
+    event.stopPropagation();
+  };
 	return (
-		<>
+		<div >
           <Slider 
             sx={{width:'150px',color:'white'}} 
             value={imageWidth} 
             onChange={handleWidthChange} 
              ref={sliderRef}
+              // Prevent focus on mouse down
+        	onTouchStart={ preventFocus} // Log touch start events
+        	onTouchMove={ preventFocus}
             min={30} 
             max={100} />
-        </>
+        </div>
 	)
 }
 
