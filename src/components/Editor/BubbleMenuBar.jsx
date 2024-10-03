@@ -4,12 +4,17 @@ import React , {useState,useEffect} from "react";
 import { useEditor, EditorContent, BubbleMenu } from "@tiptap/react";
 import styles from './BubbleMenu.module.css';
 import { BoldIcon, ItalicIcon, Link, Quote, Strikethrough, Type, UnderlineIcon } from "lucide-react";
-import {Typography, Slider } from "@mui/material"
-import {LinkSelector} from './LinkSelector.jsx'
+import LinkSelector from './LinkSelector.jsx'
+import ImageSlider from './ImageSlider.jsx'
 
-export const BubbleMenuBar = ({ editor, showBubbleMenu, showLinkSelector, setShowLinkSelector }) => {
-  
- 
+
+export const BubbleMenuBar = ({ 
+  editor, 
+  showBubbleMenu, 
+  showLinkSelector, 
+  setShowLinkSelector }) => {
+
+  const [isImageSelected, setIsImageSelected] = useState(false);
 
   const items = [
     {
@@ -85,8 +90,6 @@ export const BubbleMenuBar = ({ editor, showBubbleMenu, showLinkSelector, setSho
     };
   }, [editor, setShowLinkSelector]);
 
-  const [isImageSelected, setIsImageSelected] = useState(false);
-  const [imageWidth, setImageWidth] = useState(100); // Default width
 
   useEffect(() => {
     if (!editor) return;
@@ -95,28 +98,18 @@ export const BubbleMenuBar = ({ editor, showBubbleMenu, showLinkSelector, setSho
       const { node } = editor.state.selection;
       if (node && node.type.name === 'image') {
         setIsImageSelected(true);
-        console.log('inupdateseletion',node.attrs);
-        setImageWidth(parseInt(node.attrs.width) || 100); // Set width based on node attribute
+        //setImageWidth(parseInt(node.attrs.width) || 77); // Set width based on node attribute
       } else {
         setIsImageSelected(false);
       }
     };
 
     editor.on('selectionUpdate', updateSelection);
-
     return () => {
       editor.off('selectionUpdate', updateSelection);
     };
   }, [editor]);
-
-  const handleWidthChange = (event, newValue) => {
-    setImageWidth(newValue);
-    console.log(newValue);
-    //editor.commands.updateAttributes('image', { width: `${newValue}%` });
-     editor.chain().focus().updateAttributes('image', { width: `${newValue}%` }).run();
-  };
-
-
+  
   return (
     <BubbleMenu
       className={`${showBubbleMenu ? styles.bubbleMenu : styles.bubbleMenuHidden}`} // Use module class names
@@ -128,9 +121,12 @@ export const BubbleMenuBar = ({ editor, showBubbleMenu, showLinkSelector, setSho
 
       {isImageSelected ? (
         // Show image controls when an image is selected
-        <div >
-          <Slider sx={{width:'150px',color:'white'}} value={imageWidth} onChange={handleWidthChange} min={10} max={100} />
-        </div>
+        <ImageSlider 
+          editor={editor}
+          isImageSelected={isImageSelected}
+          setIsImageSelected={setIsImageSelected}
+        />
+        
       ) : (
         showLinkSelector ? (
           <LinkSelector

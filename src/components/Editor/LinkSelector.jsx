@@ -8,7 +8,7 @@ import { useOutsideClick } from "../../hooks/use_outside_clicks.jsx";
 import { getUrlFromString } from "../../utils/get-url-from-string";
 import styles from './LinkSelector.module.css'; 
 
-export const LinkSelector = ({ editor, showLinkSelector, setShowLinkSelector }) => {
+const LinkSelector = ({ editor, showLinkSelector, setShowLinkSelector }) => {
   const ref = useOutsideClick(() => {
     setShowLinkSelector(false);
     console.log('this')
@@ -79,3 +79,5 @@ export const LinkSelector = ({ editor, showLinkSelector, setShowLinkSelector }) 
     </div>
   );
 };
+
+export default LinkSelector;

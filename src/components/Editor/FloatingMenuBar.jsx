@@ -47,7 +47,7 @@ export default function FloatingMenuBar({
 
 	const hiddenFileInput = useRef() ;
 	const shouldFloatingMenuShow = (editor) => {
-		console.log('here')
+		
 	    const { selection } = editor.state;
 	    // If the selection is not empty, do not show the floating menu.
 	    // If depth is 1, it means the selection is in the top level of the document.
