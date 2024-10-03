@@ -1,73 +1,43 @@
+import React, { useState, useEffect, useRef } from "react";
 
-import React, {  useState,useEffect,useRef } from "react";
-import { Slider } from "@mui/material"
-
-const ImageSlider = ({ editor, isImageSelected, setIsImageSelected }) =>{
+const ImageSlider = ({ editor }) => {
   const [imageWidth, setImageWidth] = useState(100); // Default width
   const sliderRef = useRef(null);
 
-  const handleWidthChange = (event, newValue) => {
+  const handleWidthChange = (event) => {
+    const newValue = event.target.value;
     setImageWidth(newValue);
-     editor.chain().focus().updateAttributes('image', { width: `${newValue}%` }).run();
+    editor.chain().focus().updateAttributes('image', { width: `${newValue}%` }).run();
   };
 
   useEffect(() => {
-    if (!editor) 
-    	return;
-	const { node } = editor.state.selection; 
-	
-	setImageWidth(parseInt(node.attrs.width) || 77); // Set width based on node attribute
-    return ;
-  }, []);
+    if (!editor) return;
 
-  useEffect(() => {
-	  const slider = sliderRef.current;
-
-	  const handleTouch = event => {
-	    event.preventDefault(); // Prevent the default behavior
-	  };
-
-	  if (slider) {
-	    // Set the passive option to false
-	    slider.addEventListener('touchstart', handleTouch, { passive: false });
-	    slider.addEventListener('touchmove', handleTouch, { passive: false });
-	  }
-
-	  // Clean up listener on unmount
-	  return () => {
-	    if (slider) {
-	      slider.removeEventListener('touchstart', handleTouch);
-	      slider.removeEventListener('touchmove', handleTouch);
-	    }
-	  };
-	}, []);
-
-   const handleMouseDown = (event) => {
-    console.log('Mouse down event triggered:', event);
-  };
+    const { node } = editor.state.selection;
+    if (node && node.type.name === 'image') { // Ensure node is an image
+      setImageWidth(parseInt(node.attrs.width) || 100); // Default to 100% if undefined
+    }
+  }, [editor]); // Add editor as a dependency
 
   const handleTouchStart = (event) => {
+    event.preventDefault(); // Prevent default behavior
     console.log('Touch start event triggered:', event);
   };
 
-   const preventFocus = (event) => {
-    //event.preventDefault();
-    event.stopPropagation();
-  };
-	return (
-		<div >
-          <Slider 
-            sx={{width:'150px',color:'white'}} 
-            value={imageWidth} 
-            onChange={handleWidthChange} 
-             ref={sliderRef}
-              // Prevent focus on mouse down
-        	onTouchStart={ preventFocus} // Log touch start events
-        	onTouchMove={ preventFocus}
-            min={30} 
-            max={100} />
-        </div>
-	)
-}
+  return (
+    <div>
+      <input
+        type="range"
+        min="30"
+        max="100"
+        value={imageWidth}
+        onChange={handleWidthChange}
+        onTouchStart={handleTouchStart} // Prevent focus on touch start
+        // Set the width of the slider
+      />
+      <span>{imageWidth}%</span> {/* Display the current width percentage */}
+    </div>
+  );
+};
 
 export default ImageSlider;
