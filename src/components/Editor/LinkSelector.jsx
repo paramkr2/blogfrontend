@@ -3,9 +3,9 @@ import { Check, Trash, X } from "lucide-react";
 import React, {  useEffect } from "react";
 import { toast } from "sonner";
 
-import { useOutsideClick } from "../hooks/use_outside_clicks.jsx";
+import { useOutsideClick } from "../../hooks/use_outside_clicks.jsx";
 
-import { getUrlFromString } from "../utils/get-url-from-string";
+import { getUrlFromString } from "../../utils/get-url-from-string";
 import styles from './LinkSelector.module.css'; 
 
 export const LinkSelector = ({ editor, showLinkSelector, setShowLinkSelector }) => {

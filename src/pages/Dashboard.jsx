@@ -6,9 +6,10 @@ import { jwtDecode } from 'jwt-decode';
 import { useAuth } from '../context/AuthContext';
 import { Save as SaveIcon, Delete as DeleteIcon, Preview as PreviewIcon , Edit as EditIcon , Logout as LogoutIcon, AccountBox as AccountBoxIcon } from '@mui/icons-material';
 
-import PostList from '../components/PostList.jsx'; 
-import EditProfile from '../components/EditProfile.jsx';
-import QueryManager from '../components/QueryManager.jsx'
+import PostList from '../components/Dashboard/PostList.jsx'; 
+import EditProfile from '../components/Dashboard/EditProfile.jsx';
+import QueryManager from '../components/Dashboard/QueryManager.jsx'
+
 function DashboardPage() {
   const { isLoggedIn , setIsLoggedIn} = useAuth();
   const [tabValue, setTabValue] = useState(0);

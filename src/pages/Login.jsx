@@ -32,7 +32,7 @@ const LoginPage = () => {
       setIsLoggedIn(true);
 
       // Redirect to /blog
-      navigate('/blog');
+      navigate('/dashboard');
     } catch (err) {
       setError('Invalid username or password');
       setOpenSnackbar(true); // Open the snackbar when there's an error

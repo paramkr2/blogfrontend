@@ -52,9 +52,26 @@ export default function Editor({ content, onUpdate }) {
       Link.configure({
         openOnClick: false, // Open the link on click
       }),
-      Image.configure({
-        HTMLAttributes: {
-          class: 'editor-image', // Add a custom class for image resizing
+      Image,
+      Image.extend({
+        addAttributes() {
+          return {
+            class: {
+              default: 'editor-image',  // Your custom class
+              renderHTML: attributes => ({
+                class: 'editor-image',  // Ensure the class is applied
+              }),
+            },
+            width: {
+              default: '50%',
+              // Get the width from the HTML element (if present)
+              parseHTML: element => element.style.width || '50%',
+              // Render the width as a style attribute in the HTML
+              renderHTML: attributes => ({
+                style: `width: ${attributes.width}`,  // Ensure width is applied
+              }),
+            },
+          };
         },
       }),
       YouTubeEmbed,

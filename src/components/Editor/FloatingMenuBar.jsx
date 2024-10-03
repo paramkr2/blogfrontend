@@ -11,9 +11,9 @@ import classNames from "classnames";
 
 import PlusButton from './Buttons/PlusButton.jsx'
 
-import { useOutsideClick } from "../hooks/use_outside_clicks.jsx";
-import { convertFileToBase64 } from "../utils/convert-file-to-base64.js";
-import { extractVideoId, generateEmbedUrl } from '../utils/video.js';
+import { useOutsideClick } from "../../hooks/use_outside_clicks.jsx";
+import { convertFileToBase64 } from "../../utils/convert-file-to-base64.js";
+import { extractVideoId, generateEmbedUrl } from '../../utils/video.js';
 import axios from 'axios';
 
 
@@ -142,7 +142,7 @@ export default function FloatingMenuBar({
 	    );
 	    console.log(response.data)
 	    if (response.data) {
-	      editor?.chain().focus().setImage({ src: response.data.image }).run();
+	      editor?.chain().focus().setImage({ src: response.data.image , width:'100%'} ).run();
 	    }
 	    setIsUploading(false)
 	};

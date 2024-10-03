@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import RichTextEditor from '../components/RichTextEditor.jsx';
+import RichTextEditor from '../components/Editor/RichTextEditor.jsx';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './styles/PostEditPage.css';
