@@ -9,13 +9,14 @@ const PostForm = ({ initialContent, onSubmit, onDelete, isPublished }) => {
   const [loadingPublish, setLoadingPublish] = useState(false); // Separate loading state for Publish
   const [loadingDraft, setLoadingDraft] = useState(false); // Separate loading state for Draft
   const [notification, setNotification] = useState({ open: false, message: '', severity: 'success' });
-
+  
   const extractTitleAndCleanContent = (content) => {
-    const parsedContent = parse(content);
+    let parsedContent = parse(content);
     const titleElement = parsedContent.querySelector('h1');
-    const title = titleElement ? titleElement.textContent : 'Untitled';
+    let title = titleElement ? titleElement.textContent : 'Untitled';
     if (titleElement) titleElement.remove();
-    return { title, finalContent: parsedContent.toString() };
+    let finalContent = parsedContent.toString()
+    return {title,finalContent}
   };
 
   const handleError = (error) => {
@@ -65,7 +66,11 @@ const PostForm = ({ initialContent, onSubmit, onDelete, isPublished }) => {
   };
 
   const handleCloseNotification = () => setNotification({ open: false });
-
+  const handlePreview = () => {
+    const { title, finalContent } = extractTitleAndCleanContent(content);
+    const previewUrl = `${window.location.origin}/posts/preview?title=${encodeURIComponent(title)}&content=${encodeURIComponent(finalContent)}`;
+    window.open(previewUrl, '_blank');
+  };
   return (
     <Box className="edit post-content">
       <RichTextEditor onUpdate={setContent} content={content} />
@@ -93,7 +98,7 @@ const PostForm = ({ initialContent, onSubmit, onDelete, isPublished }) => {
         </Button>
 
         <Tooltip title="Preview Post">
-          <IconButton color="info" onClick={() => window.open(`/posts/preview?title=${title}&content=${content}`, '_blank')} sx={{ '&:hover': { color: 'blue' } }}>
+          <IconButton color="info" onClick={handlePreview} sx={{ '&:hover': { color: 'blue' } }}>
             <PreviewIcon />
           </IconButton>
         </Tooltip>

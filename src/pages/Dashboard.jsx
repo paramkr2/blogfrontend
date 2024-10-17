@@ -214,7 +214,7 @@ function DashboardPage() {
             onEdit={(id) => navigate(`/blog/${id}/edit`)} 
             onDelete={handleDelete} 
             deletingId={deletingId} // Pass the deleting state
-            onPreview={(id) => navigate(`/blog/${id}`)} 
+            onPreview={(id,slug) => navigate(`/blog/${slug}--${id}`)} 
           />
           <Pagination
             count={Math.ceil(publishedCount / 5)} 
@@ -232,7 +232,7 @@ function DashboardPage() {
             onEdit={(id) => navigate(`/blog/${id}/edit`)} 
             onDelete={handleDelete} 
             deletingId={deletingId}
-            onPreview={(id) => navigate(`/blog/${id}`)} 
+            onPreview={(id,slug) => navigate(`/blog/${slug}--${id}`)} 
           />
           <Pagination
             count={Math.ceil(draftCount / 5)} 
