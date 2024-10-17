@@ -1,215 +1,28 @@
-import React, { useState, useEffect } from 'react';
-import RichTextEditor from '../components/Editor/RichTextEditor.jsx';
+import React from 'react';
 import axios from 'axios';
+import PostEditCreateForm from '../components/PostEditCreateForm';
 import { useNavigate } from 'react-router-dom';
-import './styles/PostEditPage.css';
-import { Button, Box, CircularProgress, Snackbar, Alert , IconButton ,Tooltip } from '@mui/material';
-import { Save as SaveIcon, Preview as PreviewIcon , Delete as DeleteIcon} from '@mui/icons-material';
-import { parse } from 'node-html-parser';
+import './styles/PostEditPage.css'; // Reuse the CSS from PostCreatePage for consistent styling
 
 function PostCreatePage() {
-  const [content, setContent] = useState('<h1></h1><p></p>');
-  const [loadingDraft, setLoadingDraft] = useState(false);
-  const [loadingPublish, setLoadingPublish] = useState(false);
-  const [notification, setNotification] = useState({ open: false, message: '' });
-  const [isSaved, setIsSaved] = useState(true); // Track if content is saved
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const handleBeforeUnload = (event) => {
-      if (!isSaved) {
-        event.preventDefault();
-        event.returnValue = 'Changes not saved, and will be lost!';
-      }
-    };
-
-    window.addEventListener('beforeunload', handleBeforeUnload);
-    return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-    };
-  }, [isSaved]);
-
-  const extractTitleAndCleanContent = (content) => {
-    const parsedContent = parse(content);
-    const titleElement = parsedContent.querySelector('h1');
-    const title = titleElement ? titleElement.textContent : 'Untitled';
-
-    if (titleElement) {
-      titleElement.remove();
-    }
-
-    const finalContent = parsedContent.toString();
-    return { title, finalContent };
-  };
-
-  const handleSaveDraft = () => {
-    setLoadingDraft(true);
-
+  const handleSubmit = async (title, content, isDraft) => {
     const token = localStorage.getItem('token');
-    if (!token) {
-      setLoadingDraft(false);
-      setNotification({ open: true, message: 'No authentication token found. Please log in.' });
-      return;
-    }
-
-    const { title, finalContent } = extractTitleAndCleanContent(content);
-
-    axios.post(
+    const response = await axios.post(
       `${import.meta.env.VITE_API_URL}/api/posts/`,
-      { content: finalContent, is_published: false, title },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    )
-      .then((response) => {
-        setLoadingDraft(false);
-        setNotification({ open: true, message: 'Draft saved successfully!' });
-        navigate(`/blog/${response.data.id}/edit`);
-        setIsSaved(true); // Mark content as saved
-      })
-      .catch((error) => {
-        setLoadingDraft(false);
-        console.error('Error saving draft:', error);
-        setNotification({ open: true, message: 'Failed to save draft.' });
-      });
-  };
+      { title, content, is_published: !isDraft },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
 
-  // Update isSaved state when content changes
-  useEffect(() => {
-    setIsSaved(false);
-  }, [content]);
-
-  const handleSavePublish = () => {
-    setLoadingPublish(true);
-    const token = localStorage.getItem('token');
-    if (!token) {
-      setLoadingPublish(false);
-      setNotification({ open: true, message: 'No authentication token found. Please log in.' });
-      return;
+    if( !isDraft){
+      navigate(`/blog/${response.data.slug}--${response.data.id}`);
+    }else{
+      navigate(`/blog/${response.data.id}/edit/`)
     }
-
-    const { title, finalContent } = extractTitleAndCleanContent(content);
-
-    axios.post(
-      `${import.meta.env.VITE_API_URL}/api/posts/`,
-      { content: finalContent, is_published: true, title },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        }
-      }
-    )
-      .then((response) => {
-        setLoadingPublish(false);
-        console.log(response.data);
-        navigate(`/blog/${response.data.slug}--${response.data.id}`);
-        setIsSaved(true); // Mark content as saved
-      })
-      .catch((error) => {
-        setLoadingPublish(false);
-        console.error('Error publishing post:', error);
-        setNotification({ open: true, message: 'Failed to publish post.' });
-      });
   };
 
-  const handleCloseNotification = () => {
-    setNotification({ ...notification, open: false });
-  };
-  const handlePreview = () => {
-    const { title, finalContent } = extractTitleAndCleanContent(content);
-    const previewUrl = `${window.location.origin}/posts/preview?title=${encodeURIComponent(title)}&content=${encodeURIComponent(finalContent)}`;
-    window.open(previewUrl, '_blank');
-  };
-
-  return (
-    <Box className='edit post-content' >
-      <RichTextEditor onUpdate={setContent} content={content} />
-
-      <Box sx={{
-              marginTop: '20px',
-              display: 'flex',
-              flexDirection: { xs: 'column', sm: 'row' },
-              gap: '10px',
-              flexWrap: 'wrap',
-            }}
-          >
-          <Button
-              onClick={handleSavePublish}
-              startIcon={loadingPublish ? <CircularProgress size={20} /> : <SaveIcon />}
-              disabled={loadingPublish}  // Disable the button while loading
-              sx={{
-                width: { xs: '100%', sm: 'auto' },
-                backgroundColor: 'transparent',
-                color: 'inherit',
-                '&:hover': {
-                  backgroundColor: 'transparent',
-                  color: 'green', // Change to your preferred hover color
-                  backgroundColor: '#E3FCE3',
-                },
-              }}
-            >
-              {loadingPublish ? 'Saving...' : 'Save and Publish Post'}
-            </Button>
-
-            
-
-            {/* Icon buttons with tooltips */}
-            <Box
-              sx={{
-                display: 'flex',
-                gap: '10px',
-                justifyContent: { sm: 'flex-start' },
-                flexDirection: { xs: 'row', sm: 'row' },
-              }}
-            >
-              <Button
-                onClick={handleSaveDraft}
-                startIcon={loadingDraft ? <CircularProgress size={20} /> : <SaveIcon />}
-                disabled={loadingDraft}  // Disable the button while loading
-              sx={{
-                width: { xs: '70%', sm: 'auto' },
-                backgroundColor: 'transparent',
-                color: 'inherit',
-                '&:hover': {
-                  color: 'orange', // Change to your preferred hover color
-                  backgroundColor: '#FFFAE1',
-                },
-              }}
-            >
-              {loadingDraft ? 'Saving...' : 'Save as Draft'}
-            </Button>
-              <Tooltip title="Preview Post">
-                <IconButton
-                  color="info"
-                  onClick={handlePreview}
-                  sx={{
-                    backgroundColor: 'transparent',
-                    color: 'inherit',
-                    '&:hover': {
-                      color: 'blue', // Change to your preferred hover color
-                    },
-                  }}
-                >
-                  <PreviewIcon />
-                </IconButton>
-              </Tooltip>
-            </Box>
-          </Box>
-
-      {/* Snackbar for notifications */}
-      <Snackbar
-        open={notification.open}
-        autoHideDuration={3000}
-        onClose={handleCloseNotification}
-      >
-        <Alert onClose={handleCloseNotification} severity="success" sx={{ width: '100%' }}>
-          {notification.message}
-        </Alert>
-      </Snackbar>
-    </Box>
-  );
+  return <PostEditCreateForm initialContent="<h1></h1><p></p>" onSubmit={handleSubmit} />;
 }
 
 export default PostCreatePage;
