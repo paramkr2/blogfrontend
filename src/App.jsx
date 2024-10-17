@@ -24,7 +24,7 @@ function App() {
           <Route path="/create" element={<PostCreatePage/>} /> 
           <Route path="/login" element={<Login/>} /> 
           <Route path="/blog" element={<Blog/>} /> 
-          <Route path="/blog/:postId" element={<BlogPostDetail />} />
+          <Route path="/blog/:slug_postId" element={<BlogPostDetail />} />
           <Route path="/dashboard" element={<Dashboard/>} />
           <Route path="/blog2" element={<Blog2/>} /> 
         </Routes>

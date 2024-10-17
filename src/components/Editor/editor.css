@@ -13,11 +13,15 @@
 	min-height: 60vh;
 }
 
+
+
 .editor-image {
   max-width: 100%; /* Make sure images don't exceed the editor width */
   height: auto;    /* Maintain aspect ratio */
-  display: block;
+  
   margin: 0 auto ;
+  display: block;
+  text-align: center;
 }
 .post-content {
   :first-child {

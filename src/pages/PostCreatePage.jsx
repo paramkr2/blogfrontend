@@ -104,7 +104,7 @@ function PostCreatePage() {
       .then((response) => {
         setLoadingPublish(false);
         console.log(response.data);
-        navigate(`/blog/${response.data.id}`);
+        navigate(`/blog/${response.data.slug}--${response.data.id}`);
         setIsSaved(true); // Mark content as saved
       })
       .catch((error) => {

@@ -285,7 +285,7 @@ export default function HomePage() {
                   <Button 
                     variant="contained" 
                     size="small" 
-                    href={`/blog/${post.id}`} 
+                    href={`/blog/${post.slug}--${post.id}`} 
                     style={{ marginTop: 'auto' }} // Aligns button to the bottom
                   >
                     Read More

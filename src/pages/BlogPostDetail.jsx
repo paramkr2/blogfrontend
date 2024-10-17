@@ -6,7 +6,8 @@ import { formatISODate } from '../utils/formatISODate.js';
 import { Twitter, Instagram, Facebook, Share } from '@mui/icons-material';
 
 const BlogPostDetail = () => {
-  const { postId } = useParams();
+  const { slug_postId } = useParams(); // Get the combined parameter
+  const [slug, postId] = slug_postId.split('--'); // Split it into slug and postId
   const [post, setPost] = useState(null);
   const [error, setError] = useState('');
   const [anchorEl, setAnchorEl] = useState(null); // State for the share dropdown

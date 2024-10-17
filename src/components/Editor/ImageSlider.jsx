@@ -1,41 +1,51 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect,useRef } from "react";
 
 const ImageSlider = ({ editor }) => {
   const [imageWidth, setImageWidth] = useState(100); // Default width
-  const sliderRef = useRef(null);
-
+  const [caption, setCaption] = useState('Default caption'); // Default caption text
+  
+ 
   const handleWidthChange = (event) => {
     const newValue = event.target.value;
     setImageWidth(newValue);
     editor.chain().focus().updateAttributes('image', { width: `${newValue}%` }).run();
   };
 
+  
   useEffect(() => {
     if (!editor) return;
 
     const { node } = editor.state.selection;
-    if (node && node.type.name === 'image') { // Ensure node is an image
-      setImageWidth(parseInt(node.attrs.width) || 100); // Default to 100% if undefined
+    if (node && node.type.name === 'image') { 
+      setImageWidth(parseInt(node.attrs.width) || 100); 
+      setCaption(node.attrs.caption || 'Default caption'); 
     }
   }, [editor]); // Add editor as a dependency
 
-  const handleTouchStart = (event) => {
-    event.preventDefault(); // Prevent default behavior
-    console.log('Touch start event triggered:', event);
+  // Handle caption change
+  const handleCaptionChange = (event) => {
+    const newCaption = event.target.value;
+    setCaption(newCaption);
+    editor.chain().updateAttributes('image', { caption: newCaption }).run(); // Update caption in the editor
   };
 
+
+
   return (
-    <div>
+    <div style={{ color: 'white' }}>
       <input
         type="range"
         min="30"
         max="100"
         value={imageWidth}
         onChange={handleWidthChange}
-        onTouchStart={handleTouchStart} // Prevent focus on touch start
-        // Set the width of the slider
+        style={{ width: '150px', background: 'white' }} // Customize slider appearance
       />
-      <span>{imageWidth}%</span> {/* Display the current width percentage */}
+      <span >{imageWidth}%</span> {/* Display the current width percentage */}
+
+      
+      
+	  
     </div>
   );
 };

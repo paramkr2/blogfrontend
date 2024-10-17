@@ -62,7 +62,7 @@ function BlogEditPage() {
       .then(response => {
         setIsPublished(true); // Update local state
         setNotification({ open: true, message: 'Post saved successfully!' });
-        navigate(`/blog/${response.data.id}`);
+        navigate(`/blog/${response.data.slug}--${response.data.id}`);
       })
       .catch(error => {
         console.error('Error saving post:', error);
@@ -111,7 +111,7 @@ function BlogEditPage() {
       headers: { 'Authorization': `Bearer ${token}` },
     })
       .then(() => {
-        navigate('/admin');
+        navigate('/dashboard');
       })
       .catch(error => console.error('Error deleting post:', error));
   };

@@ -1,9 +1,9 @@
 
-
 import React , {useState,useEffect} from "react";
 
 import { LinearProgress, Box, Typography } from '@mui/material';
 
+import { mergeAttributes } from '@tiptap/core';
 import { useEditor, EditorContent, BubbleMenu } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 
@@ -70,9 +70,9 @@ export default function Editor({ content, onUpdate }) {
               renderHTML: attributes => ({
                 style: `width: ${attributes.width}`,  // Ensure width is applied
               }),
-            },
+            }
           };
-        },
+        }
       }),
       YouTubeEmbed,
       Placeholder.configure({
@@ -110,7 +110,8 @@ export default function Editor({ content, onUpdate }) {
       editor={editor} 
       showBubbleMenu={showBubbleMenu} 
       showLinkSelector={showLinkSelector} 
-      setShowLinkSelector={setShowLinkSelector} 
+      setShowLinkSelector={setShowLinkSelector}
+
     />)}
     
     {/* The floating menu bar that appears with the plus button */}

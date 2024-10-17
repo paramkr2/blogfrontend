@@ -64,7 +64,7 @@ const Blog = () => {
         ) : (
           posts.map((post) => (
             <Grid item xs={12} md={12} key={post.id}>
-              <Link to={`/blog/${post.id}`} style={{ textDecoration: 'none' }}>
+              <Link to={`/blog/${post.slug}--${post.id}`} style={{ textDecoration: 'none' }}>
                 <Card sx={{ display: { xs: 'block', md: 'flex' } }}>
                   <CardMedia
                     component="img"
